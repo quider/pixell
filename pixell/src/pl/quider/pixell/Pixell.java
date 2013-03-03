@@ -1,16 +1,30 @@
 package pl.quider.pixell;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.JFrame;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.JList;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import javax.swing.AbstractListModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class Pixell {
 
@@ -18,8 +32,10 @@ public class Pixell {
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @throws IOException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -30,92 +46,119 @@ public class Pixell {
 				}
 			}
 		});
+
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public Pixell() {
-		try {
-			initialize();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	/**
-	 * Initialize the contents of the frame.
-	 * 
-	 * @throws IOException
-	 */
-	private void initialize() throws IOException {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.add("Center", new Picture());
+	public Pixell() throws IOException {
+		this.frame = new JFrame();
+		frame.setSize(new Dimension(640, 480));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		frame.getContentPane().add(panel, BorderLayout.WEST);
+		
+		JList list = new JList();
+		list.setModel(new AbstractListModel() {
+			String[] values = new String[] {"Linia 1"};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addComponent(list, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addComponent(list, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+		);
+		panel.setLayout(gl_panel);
+		
+		JPanel panel_1 = new JPanel();
+		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
+		
+		JPanel panel_2 = new JPanel();
+		frame.getContentPane().add(panel_2, BorderLayout.SOUTH);
+		
+		JPanel panel_3 = new JPanel();
+		frame.getContentPane().add(panel_3, BorderLayout.EAST);
+		
+		PicturePanel picturePanel = new PicturePanel();
+		frame.getContentPane().add(picturePanel, BorderLayout.CENTER);
+
+		File file = new File("D:/Pictures/Babia góra/20120519_141245.jpg");
+		ImageInputStream is = ImageIO.createImageInputStream(file);
+		Iterator iter = ImageIO.getImageReaders(is);
+
+		if (!iter.hasNext()) {
+			System.out.println("Cannot load the specified file " + file);
+			System.exit(1);
+		}
+		ImageReader imageReader = (ImageReader) iter.next();
+		imageReader.setInput(is);
+
+		BufferedImage image = imageReader.read(0);
+		picturePanel.loadPicture(image);
+
+		int height = image.getHeight();
+		int width = image.getWidth();
+
+		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int rgb = image.getRGB(i, j);
+				int[] rgbArr = getRGBArr(rgb);
+				Integer counter = m.get(rgb);
+				if (counter == null)
+					counter = 0;
+				counter = 0;
+				counter++;
+				m.put(rgb, counter);
+			}
+		}
+		String colourHex = getMostCommonColour(m);
+		System.out.println(colourHex);
 	}
 
-	class Picture extends Component {
-		private Graphics2D g2d;
-		private BufferedImage bi;
-
-		public Picture() throws IOException {
-			System.out.println("Picture:");
-			bi = ImageIO
-					.read(new File("C:/Users/akozlowski/Pictures/nagklowek.png"));
-		}
-		@Override
-		public void paint(Graphics g) {
-			g2d = (Graphics2D) g;
-			int index = 0;
-			long redSum = 0;
-			long greenSum = 0;
-			long blueSum = 0;
-			for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-				for(int y=bi.getMinY(); y < bi.getHeight(); y++){
-					int rgb = bi.getRGB(x, y);
-					Color c = new Color(rgb);
-					int red =  c.getRed();
-					redSum += red;
-					int green = c.getGreen();
-					greenSum =+ green;
-					int blue = c.getBlue();
-					blueSum += blue;
-					c = new Color(red, green, blue);
-					bi.setRGB(x, y, c.getRGB());
-					index++;
-				}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static String getMostCommonColour(Map<Integer, Integer> map) {
+		List list = new LinkedList(map.entrySet());
+		Collections.sort(list, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((Comparable) ((Map.Entry) (o1)).getValue())
+						.compareTo(((Map.Entry) (o2)).getValue());
 			}
-		
-			g2d.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
-			
-			g2d.setColor(Color.WHITE);
-//			for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-//				if (x % 20 == 0) {
-//					g2d.drawLine(x, bi.getMinY(), x, bi.getHeight());
-//				}
-//			}
-//			for (int y = bi.getMinY(); y < bi.getHeight(); y++) {
-//				if (y % 20 == 0) {
-//					g2d.drawLine(bi.getMinX(), y, bi.getWidth(), y);
-//				}
-//			}
-			
-//			for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-//				if(x%60 == 0)
-			g2d.setColor(new Color(new Integer((int) (redSum/index)), (int)greenSum/index, (int)blueSum/index));
-					g2d.fillRect(bi.getMinX(), bi.getMinY(), 60, 60);
-//			}
-		}
+		});
+		Map.Entry me = (Map.Entry) list.get(list.size() - 1);
+		int[] rgb = getRGBArr((Integer) me.getKey());
+		return "#" + Integer.toHexString(rgb[0]) + ""
+				+ Integer.toHexString(rgb[1]) + ""
+				+ Integer.toHexString(rgb[2]);
+	}
 
-		public Graphics2D getG2d() {
-			return g2d;
-		}
+	public static int[] getRGBArr(int pixel) {
+		int alpha = (pixel >> 24) & 0xff;
+		int red = (pixel >> 16) & 0xff;
+		int green = (pixel >> 8) & 0xff;
+		int blue = (pixel) & 0xff;
+		return new int[] { red, green, blue };
 
-		public void setG2d(Graphics2D g2d) {
-			this.g2d = g2d;
-		}
+	}
+
+	public static boolean isGray(int[] rgbArr) {
+		int rgDiff = rgbArr[0] - rgbArr[1];
+		int rbDiff = rgbArr[0] - rgbArr[2];
+		// Filter out black, white and grays...... (tolerance within 10 pixels)
+		int tolerance = 10;
+		if (rgDiff > tolerance || rgDiff < -tolerance)
+			if (rbDiff > tolerance || rbDiff < -tolerance) {
+				return false;
+			}
+		return true;
 	}
 }
