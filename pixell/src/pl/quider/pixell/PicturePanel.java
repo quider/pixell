@@ -8,8 +8,12 @@ import javax.swing.JPanel;
 
 public class PicturePanel extends JPanel {
 
-	BufferedImage image;
+	private BufferedImage image;
 	
+	public BufferedImage getImage() {
+		return image;
+	}
+
 	/**
 	 * 
 	 */
