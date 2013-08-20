@@ -1,20 +1,25 @@
 package pl.quider.pixell;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
+import pl.quider.pixel.events.ImagePaintedListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Pixell {
 
 	private JFrame frame;
+	private MainPicture mainPicture;
 
 	/**
 	 * Launch the application.
@@ -53,69 +58,47 @@ public class Pixell {
 	private void initialize() throws IOException {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.add("Center", new Picture());
+		
+		mainPicture = new MainPicture("C:/Users/akozlowski/Pictures/Bez tytu³u.png");
+		mainPicture.addListener(new ImagePaintedListener() {
+			
+			@Override
+			public void onImagePainted(BufferedImage bi) {
+				frame.setBounds(frame.getX(), frame.getY(), bi.getWidth()+20, bi.getHeight()+70);
+				
+			}
+		});
+		frame.getContentPane().add(mainPicture, BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-
-	class Picture extends Component {
-		private Graphics2D g2d;
-		private BufferedImage bi;
-
-		public Picture() throws IOException {
-			System.out.println("Picture:");
-			bi = ImageIO
-					.read(new File("C:/Users/akozlowski/Pictures/nagklowek.png"));
-		}
-		@Override
-		public void paint(Graphics g) {
-			g2d = (Graphics2D) g;
-			int index = 0;
-			long redSum = 0;
-			long greenSum = 0;
-			long blueSum = 0;
-			for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-				for(int y=bi.getMinY(); y < bi.getHeight(); y++){
-					int rgb = bi.getRGB(x, y);
-					Color c = new Color(rgb);
-					int red =  c.getRed();
-					redSum += red;
-					int green = c.getGreen();
-					greenSum =+ green;
-					int blue = c.getBlue();
-					blueSum += blue;
-					c = new Color(red, green, blue);
-					bi.setRGB(x, y, c.getRGB());
-					index++;
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnProgram = new JMenu("Program");
+		menuBar.add(mnProgram);
+		
+		JMenu mnObraz = new JMenu("Obraz");
+		menuBar.add(mnObraz);
+		
+		JMenuItem mntmGwnyObraz = new JMenuItem("G\u0142\u00F3wny obraz");
+		mntmGwnyObraz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				JFileChooser fc = new JFileChooser();
+				int showOpenDialog = fc.showOpenDialog(frame);
+				if(showOpenDialog == JFileChooser.APPROVE_OPTION){
+					try {
+						mainPicture.readInPicture(fc.getSelectedFile().getPath());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
+		});
+		mnObraz.add(mntmGwnyObraz);
 		
-			g2d.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
-			
-			g2d.setColor(Color.WHITE);
-//			for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-//				if (x % 20 == 0) {
-//					g2d.drawLine(x, bi.getMinY(), x, bi.getHeight());
-//				}
-//			}
-//			for (int y = bi.getMinY(); y < bi.getHeight(); y++) {
-//				if (y % 20 == 0) {
-//					g2d.drawLine(bi.getMinX(), y, bi.getWidth(), y);
-//				}
-//			}
-			
-//			for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-//				if(x%60 == 0)
-			g2d.setColor(new Color(new Integer((int) (redSum/index)), (int)greenSum/index, (int)blueSum/index));
-					g2d.fillRect(bi.getMinX(), bi.getMinY(), 60, 60);
-//			}
-		}
-
-		public Graphics2D getG2d() {
-			return g2d;
-		}
-
-		public void setG2d(Graphics2D g2d) {
-			this.g2d = g2d;
-		}
+		JMenuItem mntmKatalogObrazkw = new JMenuItem("Katalog obrazk\u00F3w");
+		mnObraz.add(mntmKatalogObrazkw);
 	}
+
+	
 }
