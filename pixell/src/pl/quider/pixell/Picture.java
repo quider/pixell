@@ -38,13 +38,13 @@ public class Picture extends JComponent implements Closeable {
 	 * Returns average color of picture
 	 * @return
 	 */
-	public Color getAverageColor(){
+	public static Color getAverageColor(BufferedImage bi){
 		int index = 0;
 		long redSum = 0;
 		long greenSum = 0;
 		long blueSum = 0;
-		for (int x = bi.getMinX(); x < bi.getWidth(); x+=4) {
-			for(int y=bi.getMinY(); y < bi.getHeight(); y+=4){
+		for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
+			for(int y=bi.getMinY(); y < bi.getHeight(); y++){
 				int rgb = bi.getRGB(x, y);
 				Color c = new Color(rgb);
 				int red =  c.getRed();
@@ -66,7 +66,7 @@ public class Picture extends JComponent implements Closeable {
 		g2d = (Graphics2D) g;
 		g2d.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
 		g2d.setColor(Color.WHITE);
-		g2d.setColor(getAverageColor());
+		g2d.setColor(getAverageColor(bi));
 		g2d.fillRect(bi.getMinX(), bi.getMinY(), 60, 60);
 	}
 

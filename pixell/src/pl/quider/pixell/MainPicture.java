@@ -1,5 +1,6 @@
 package pl.quider.pixell;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -13,7 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.SwingWorker;
 
-import pl.quider.pixel.events.ImagePaintedListener;
+import pl.quider.pixell.events.ImagePaintedListener;
 
 public class MainPicture extends JComponent {
 
@@ -24,11 +25,11 @@ public class MainPicture extends JComponent {
 	private Graphics2D g2d;
 	private BufferedImage bi;
 	private List<ImagePaintedListener> listeners;
-	private double lenFactor = 0.05; 
+	private double lenFactor = 0.015;
 
 	public MainPicture(String picturePath) throws IOException {
 		listeners = new ArrayList<ImagePaintedListener>();
-		if (picturePath != null && !picturePath.isEmpty()){
+		if (picturePath != null && !picturePath.isEmpty()) {
 			readInPicture(picturePath);
 		}
 
@@ -107,29 +108,46 @@ public class MainPicture extends JComponent {
 		return this;
 	}
 
-	class ImageCountWorker extends SwingWorker<Boolean, String> {
-		
+	class ImageCountWorker extends SwingWorker<Boolean, Integer> {
+
 		private BufferedImage bi;
 
 		public ImageCountWorker(BufferedImage bi) {
-			this.bi = bi;
+			this.bi = bi;			
+		}
+
+		@Override
+		protected void done() {
+			MainPicture.this.repaint();
+
 		}
 		
 		@Override
-		protected void done() {
-	
+		protected void process(List<Integer> chunks) {
 		}
 
 		@Override
 		protected Boolean doInBackground() throws Exception {
 			int h = bi.getHeight();
 			int w = bi.getWidth();
-			double div = h/lenFactor;
-			
-			
-			
+			int wMini = (int) (w * lenFactor); // szerokosc miniaturowego zdjecia
+			int hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
+
+			int x = 0;
+			int y = 0;
+			while (y < h && y+hMini < this.bi.getHeight()) {
+				while (x < w && (x+wMini) < this.bi.getWidth()) {
+					BufferedImage image = this.bi.getSubimage(x, y, wMini, hMini);
+					Color color = Picture.getAverageColor(image);
+					Graphics2D graphics = (Graphics2D) image.getGraphics();
+					graphics.setColor(color);
+					graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+					x += wMini;
+				}
+				x=0;
+				y+=hMini;
+			}
 			return null;
 		}
-
 	}
 }

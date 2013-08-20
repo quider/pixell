@@ -13,7 +13,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import pl.quider.pixel.events.ImagePaintedListener;
+import pl.quider.pixell.events.ImagePaintedListener;
+
+import java.awt.Panel;
+import javax.swing.JProgressBar;
 
 public class Pixell {
 
@@ -35,7 +38,7 @@ public class Pixell {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
