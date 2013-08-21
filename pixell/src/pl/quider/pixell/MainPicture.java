@@ -9,16 +9,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.SwingWorker;
 
+import pl.quider.pixell.events.ImageInserted;
 import pl.quider.pixell.events.ImagePaintedListener;
 
-public class MainPicture extends JComponent {
-
+public class MainPicture extends JComponent implements ImageInserted{
 	/**
 	 * 
 	 */
@@ -114,6 +117,21 @@ public class MainPicture extends JComponent {
 	}
 
 	/**
+	 * finds color on mosaic
+	 * @param c
+	 */
+	public Point findColorOnMosaic(Color c){
+		Set<Entry<Point,Color>> entrySet = colorMap.entrySet();
+		Iterator<Entry<Point, Color>> iterator = entrySet.iterator();
+		while(iterator.hasNext()){
+			Entry<Point, Color> next = iterator.next();
+			if(next.getValue().equals(c) || next.getValue().equals(c.brighter()) || next.getValue().equals(c.darker())){
+				return next.getKey();
+			}
+		}
+		return null;
+	}
+	/**
 	 * Removes listener
 	 * 
 	 * @param l
@@ -150,6 +168,7 @@ public class MainPicture extends JComponent {
 		@Override
 		protected void process(List<Integer> chunks) {
 		}
+		
 
 		@Override
 		protected Boolean doInBackground() throws Exception {
@@ -159,25 +178,26 @@ public class MainPicture extends JComponent {
 			int hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
 
 			int x = 0;
-			int xp = 0;
 			int y = 0;
-			int yp = 0;
 			while (y < h && y+hMini < this.bi.getHeight()) {
 				while (x < w && (x+wMini) < this.bi.getWidth()) {
 					BufferedImage image = this.bi.getSubimage(x, y, wMini, hMini);
 					Color color = Picture.getAverageColor(image);
 					Graphics2D graphics = (Graphics2D) image.getGraphics();
 					graphics.setColor(color);
-					colorMap.put(new Point(xp,yp), color);
+					colorMap.put(new Point(x,y, wMini, hMini), color);
 					graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 					x += wMini;
-					xp++;
 				}
 				x=0;
 				y+=hMini;
-				y++;
 			}
 			return true;
 		}
+	}
+
+	@Override
+	public void onImageInsertion() {
+		this.repaint();
 	}
 }

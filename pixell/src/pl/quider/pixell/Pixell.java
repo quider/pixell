@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,7 +25,6 @@ public class Pixell {
 	private JFrame frame;
 	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
-	
 
 	/**
 	 * Launch the application.
@@ -41,7 +41,7 @@ public class Pixell {
 			}
 		});
 	}
-	
+
 	/**
 	 * Create the application.
 	 */
@@ -54,7 +54,6 @@ public class Pixell {
 		}
 	}
 
-
 	/**
 	 * Initialize the contents of the frame.
 	 * 
@@ -63,13 +62,13 @@ public class Pixell {
 	private void initialize() throws IOException {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		
+
 		mainPicture = new MainPicture("");
 		mainPicture.addListener(new ImagePaintedListener() {
 
 			@Override
 			public void onImagePainted(Image bi) {
-				frame.setBounds(frame.getX(), frame.getY(), bi.getWidth(null)+20, bi.getHeight(null)+70);
+				frame.setBounds(frame.getX(), frame.getY(), bi.getWidth(null) + 20, bi.getHeight(null) + 70);
 
 			}
 		});
@@ -90,7 +89,7 @@ public class Pixell {
 			public void actionPerformed(ActionEvent event) {
 				JFileChooser fc = new JFileChooser();
 				int showOpenDialog = fc.showOpenDialog(frame);
-				if(showOpenDialog == JFileChooser.APPROVE_OPTION){
+				if (showOpenDialog == JFileChooser.APPROVE_OPTION) {
 					try {
 						mainPicture.readInPicture(fc.getSelectedFile().getPath());
 					} catch (IOException e) {
@@ -103,13 +102,13 @@ public class Pixell {
 
 		JMenuItem mntmKatalogObrazkw = new JMenuItem("Katalog obrazk\u00F3w");
 		mntmKatalogObrazkw.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int i = fc.showOpenDialog(Pixell.this.frame);
-				if(i == JFileChooser.APPROVE_OPTION){
+				if (i == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fc.getSelectedFile();
 					Runnable sniffer = new CatalogSniffer(Pixell.this, selectedFile);
 					Thread executor = new Thread(sniffer);
@@ -120,9 +119,18 @@ public class Pixell {
 		mnObraz.add(mntmKatalogObrazkw);
 	}
 
-	public synchronized void addPictureToMap(Color c, String path){
-		System.out.println(path+": "+c.toString());
+	public synchronized void addPictureToMap(Color c, String path) {
+		System.out.println(path + ": " + c.toString());
 		map.put(path, c);
+		Point point = mainPicture.findColorOnMosaic(c);
+		if (point != null) {
+			try {
+				Thread t = new Thread(new ReplaceColorWithImage(point, mainPicture.getBi(), ImageIO.read(new File(path))));
+				t.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
