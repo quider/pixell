@@ -27,6 +27,11 @@ public class MainPicture extends JComponent {
 	private List<ImagePaintedListener> listeners;
 	private double lenFactor = 0.015;
 
+	/**
+	 * 
+	 * @param picturePath
+	 * @throws IOException
+	 */
 	public MainPicture(String picturePath) throws IOException {
 		listeners = new ArrayList<ImagePaintedListener>();
 		if (picturePath != null && !picturePath.isEmpty()) {
@@ -65,10 +70,18 @@ public class MainPicture extends JComponent {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public BufferedImage getBi() {
 		return bi;
 	}
 
+	/**
+	 * 
+	 * @param bi
+	 */
 	public void setBi(BufferedImage bi) {
 		this.bi = bi;
 	}
@@ -87,7 +100,7 @@ public class MainPicture extends JComponent {
 	}
 
 	/**
-	 * Dodaje listenera
+	 * Adds listenera
 	 * 
 	 * @param l
 	 * @return
@@ -98,7 +111,7 @@ public class MainPicture extends JComponent {
 	}
 
 	/**
-	 * Usuwa listenera
+	 * Removes listener
 	 * 
 	 * @param l
 	 * @return
@@ -108,10 +121,19 @@ public class MainPicture extends JComponent {
 		return this;
 	}
 
+	/**
+	 * This class is used to calculate average color each of little square on big picture
+	 * @author akozlowski
+	 *
+	 */
 	class ImageCountWorker extends SwingWorker<Boolean, Integer> {
 
 		private BufferedImage bi;
 
+		/**
+		 * Constructor get BufferedImage as param
+		 * @param bi
+		 */
 		public ImageCountWorker(BufferedImage bi) {
 			this.bi = bi;			
 		}
@@ -147,7 +169,7 @@ public class MainPicture extends JComponent {
 				x=0;
 				y+=hMini;
 			}
-			return null;
+			return true;
 		}
 	}
 }
