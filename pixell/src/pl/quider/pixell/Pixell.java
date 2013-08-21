@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,14 +19,12 @@ import javax.swing.JMenuItem;
 
 import pl.quider.pixell.events.ImagePaintedListener;
 
-import java.awt.Panel;
-import javax.swing.JProgressBar;
-
 public class Pixell {
 
 	private JFrame frame;
 	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
+	
 
 	/**
 	 * Launch the application.
@@ -125,6 +121,7 @@ public class Pixell {
 	}
 
 	public synchronized void addPictureToMap(Color c, String path){
+		System.out.println(path+": "+c.toString());
 		map.put(path, c);
 	}
 

@@ -45,8 +45,8 @@ public class Picture extends JComponent implements Closeable {
 		long redSum = 0;
 		long greenSum = 0;
 		long blueSum = 0;
-		for (int x = bi.getMinX(); x < bi.getWidth(); x++) {
-			for(int y=bi.getMinY(); y < bi.getHeight(); y++){
+		for (int x = bi.getMinX(); x < bi.getWidth(); x+=4) {
+			for(int y=bi.getMinY(); y < bi.getHeight(); y+=4){
 				int rgb = bi.getRGB(x, y);
 				Color c = new Color(rgb);
 				int red =  c.getRed();

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -24,6 +25,7 @@ public class MainPicture extends JComponent {
 	private static final long serialVersionUID = 3498357329889565399L;
 	private Graphics2D g2d;
 	private BufferedImage bi;
+	private HashMap<Point,Color> colorMap;
 	private List<ImagePaintedListener> listeners;
 	private double lenFactor = 0.015;
 
@@ -95,6 +97,7 @@ public class MainPicture extends JComponent {
 	 */
 	public MainPicture readInPicture(String path) throws IOException {
 		bi = ImageIO.read(new File(path));
+		colorMap = new HashMap<Point, Color>();
 		new ImageCountWorker(bi).execute();
 		return this;
 	}
@@ -156,18 +159,23 @@ public class MainPicture extends JComponent {
 			int hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
 
 			int x = 0;
+			int xp = 0;
 			int y = 0;
+			int yp = 0;
 			while (y < h && y+hMini < this.bi.getHeight()) {
 				while (x < w && (x+wMini) < this.bi.getWidth()) {
 					BufferedImage image = this.bi.getSubimage(x, y, wMini, hMini);
 					Color color = Picture.getAverageColor(image);
 					Graphics2D graphics = (Graphics2D) image.getGraphics();
 					graphics.setColor(color);
+					colorMap.put(new Point(xp,yp), color);
 					graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 					x += wMini;
+					xp++;
 				}
 				x=0;
 				y+=hMini;
+				y++;
 			}
 			return true;
 		}
