@@ -20,14 +20,16 @@ public class Picture extends JComponent implements Closeable {
 	private static final long serialVersionUID = 3650932533372831198L;
 	private Graphics2D g2d;
 	private BufferedImage bi;
+	private String path ;
 
 	/**
 	 * 
-	 * @param pictureDirectory katalog ze zdj�ciami do mozajki
+	 * @param picturePath 
 	 * @throws IOException
 	 */
-	public Picture(String pictureDirectory) throws IOException {
-		bi = ImageIO.read(new File(pictureDirectory));
+	public Picture(String picturePath) throws IOException {
+		this.path = picturePath;
+		bi = ImageIO.read(new File(picturePath));
 	}
 	
 	public Picture(BufferedImage bi) {
@@ -84,5 +86,21 @@ public class Picture extends JComponent implements Closeable {
 	
 	public void setG2d(Graphics2D g2d) {
 		this.g2d = g2d;
+	}
+
+	public BufferedImage getBi() {
+		return bi;
+	}
+
+	public void setBi(BufferedImage bi) {
+		this.bi = bi;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }

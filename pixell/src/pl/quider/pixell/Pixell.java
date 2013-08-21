@@ -1,11 +1,17 @@
 package pl.quider.pixell;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,6 +28,7 @@ public class Pixell {
 
 	private JFrame frame;
 	private MainPicture mainPicture;
+	public Map<String, Color> map = new HashMap<String, Color>();
 
 	/**
 	 * Launch the application.
@@ -99,8 +106,26 @@ public class Pixell {
 		mnObraz.add(mntmGwnyObraz);
 
 		JMenuItem mntmKatalogObrazkw = new JMenuItem("Katalog obrazk\u00F3w");
+		mntmKatalogObrazkw.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int i = fc.showOpenDialog(Pixell.this.frame);
+				if(i == JFileChooser.APPROVE_OPTION){
+					File selectedFile = fc.getSelectedFile();
+					Runnable sniffer = new CatalogSniffer(Pixell.this, selectedFile);
+					Thread executor = new Thread(sniffer);
+					executor.start();
+				}
+			}
+		});
 		mnObraz.add(mntmKatalogObrazkw);
 	}
 
+	public synchronized void addPictureToMap(Color c, String path){
+		map.put(path, c);
+	}
 
 }
