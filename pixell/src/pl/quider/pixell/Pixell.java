@@ -124,6 +124,7 @@ public class Pixell {
 		map.put(path, c);
 		Point point = mainPicture.findColorOnMosaic(c);
 		if (point != null) {
+			System.err.println("Pasujący kolor! ");
 			try {
 				Thread t = new Thread(new ReplaceColorWithImage(point, mainPicture.getBi(), ImageIO.read(new File(path))));
 				t.start();

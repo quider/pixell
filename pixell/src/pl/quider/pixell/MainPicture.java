@@ -127,6 +127,21 @@ public class MainPicture extends JComponent implements ImageInserted{
 			Entry<Point, Color> next = iterator.next();
 			if(next.getValue().equals(c) || next.getValue().equals(c.brighter()) || next.getValue().equals(c.darker())){
 				return next.getKey();
+			} else {
+				Color value = next.getValue();
+				int blue = c.getBlue() - value.getBlue();
+				int red = c.getRed() - value.getRed();
+				int green = c.getGreen() - value.getGreen();
+				if (-5 > blue || blue > 5){
+					return null;
+				}
+				if(-5 > red || red > 5){
+					return null;
+				}
+				if (-5 > green || green > 5){
+					return null;
+				}
+				return next.getKey();
 			}
 		}
 		return null;

@@ -39,8 +39,7 @@ public class CatalogSniffer implements Runnable {
 //				executor.
 			} else {
 				Runnable catalogSniffer = new CatalogSniffer(parent, f);
-				Thread t = new Thread(catalogSniffer);
-				t.start();
+				executor.execute(catalogSniffer);
 			}
 		}
 
