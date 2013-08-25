@@ -126,7 +126,9 @@ public class Pixell {
 		if (point != null) {
 			System.err.println("Pasujący kolor! ");
 			try {
-				Thread t = new Thread(new ReplaceColorWithImage(point, mainPicture.getBi(), ImageIO.read(new File(path))));
+				ReplaceColorWithImage replaceColorWithImage = new ReplaceColorWithImage(point, mainPicture.getBi(), ImageIO.read(new File(path)));
+				replaceColorWithImage.addListener(mainPicture);
+				Thread t = new Thread(replaceColorWithImage);
 				t.start();
 			} catch (IOException e) {
 				e.printStackTrace();

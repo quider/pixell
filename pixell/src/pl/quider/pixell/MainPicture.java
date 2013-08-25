@@ -31,6 +31,8 @@ public class MainPicture extends JComponent implements ImageInserted{
 	private HashMap<Point,Color> colorMap;
 	private List<ImagePaintedListener> listeners;
 	private double lenFactor = 0.015;
+	
+	private final int COLORDT  = 55;
 
 	/**
 	 * 
@@ -132,13 +134,13 @@ public class MainPicture extends JComponent implements ImageInserted{
 				int blue = c.getBlue() - value.getBlue();
 				int red = c.getRed() - value.getRed();
 				int green = c.getGreen() - value.getGreen();
-				if (-5 > blue || blue > 5){
+				if (-COLORDT > blue || blue > COLORDT){
 					return null;
 				}
-				if(-5 > red || red > 5){
+				if(-COLORDT > red || red > COLORDT){
 					return null;
 				}
-				if (-5 > green || green > 5){
+				if (-COLORDT > green || green > COLORDT){
 					return null;
 				}
 				return next.getKey();

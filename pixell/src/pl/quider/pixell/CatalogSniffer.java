@@ -3,6 +3,7 @@ package pl.quider.pixell;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,6 +17,7 @@ public class CatalogSniffer implements Runnable {
 
 	private Pixell parent;
 	private File directory;
+	private LinkedList<File> queue;
 
 	/**
 	 * 
@@ -25,21 +27,25 @@ public class CatalogSniffer implements Runnable {
 	public CatalogSniffer(Pixell pixell, File selectedFile) {
 		this.parent = pixell;
 		this.directory = selectedFile;
+		queue = new LinkedList<File>();
+		queue.add(directory);
 	}
 
 	@Override
 	public void run() {
 		ExecutorService executor = Executors.newFixedThreadPool(10);
-		for (File f : directory.listFiles()) {
-			if (!f.isDirectory() ) {
-				String ext = f.getName().substring(f.getName().indexOf("."));
-				if(!f.getName().endsWith(ext)) continue;
-				Runnable command = new PictureViewer(f, parent);
-				executor.execute(command);
-//				executor.
-			} else {
-				Runnable catalogSniffer = new CatalogSniffer(parent, f);
-				executor.execute(catalogSniffer);
+		File f = null;
+		while ((f = queue.removeFirst()) != null) {
+			for (File element : f.listFiles()) {
+				if (!element.isDirectory()) {
+					String ext = element.getName().substring(element.getName().indexOf("."));
+					if (!element.getName().endsWith(ext))
+						continue;
+					Runnable command = new PictureViewer(element, parent);
+					executor.execute(command);
+				} else {
+					queue.add(element);
+				}
 			}
 		}
 
