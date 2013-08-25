@@ -143,7 +143,9 @@ public class MainPicture extends JComponent implements ImageInserted{
 				if (-COLORDT > green || green > COLORDT){
 					return null;
 				}
-				return next.getKey();
+				Point key = next.getKey();
+				colorMap.remove(key);
+				return key;
 			}
 		}
 		return null;
