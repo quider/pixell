@@ -33,7 +33,7 @@ public class CatalogSniffer implements Runnable {
 
 	@Override
 	public void run() {
-		ExecutorService executor = Executors.newFixedThreadPool(10);
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 		File f = null;
 		while ((f = queue.removeFirst()) != null) {
 			for (File element : f.listFiles()) {
