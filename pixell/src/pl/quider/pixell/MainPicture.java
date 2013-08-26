@@ -32,8 +32,7 @@ public class MainPicture extends JComponent implements ImageInserted{
 	private List<ImagePaintedListener> listeners;
 	private double lenFactor = 0.015;
 	
-	private final int COLORDT  = 55;
-
+	private final int COLORDT  =  20;
 	/**
 	 * 
 	 * @param picturePath
@@ -122,33 +121,38 @@ public class MainPicture extends JComponent implements ImageInserted{
 	 * finds color on mosaic
 	 * @param c
 	 */
-	public Point findColorOnMosaic(Color c){
+	public List<Point> findColorOnMosaic(Color c){
+		ArrayList<Point> result = new ArrayList<Point>();
 		Set<Entry<Point,Color>> entrySet = colorMap.entrySet();
 		Iterator<Entry<Point, Color>> iterator = entrySet.iterator();
 		while(iterator.hasNext()){
 			Entry<Point, Color> next = iterator.next();
 			if(next.getValue().equals(c) || next.getValue().equals(c.brighter()) || next.getValue().equals(c.darker())){
-				return next.getKey();
+				result.add(next.getKey());
+				return result;
 			} else {
 				Color value = next.getValue();
 				int blue = c.getBlue() - value.getBlue();
 				int red = c.getRed() - value.getRed();
 				int green = c.getGreen() - value.getGreen();
 				if (-COLORDT > blue || blue > COLORDT){
-					return null;
+					continue;
 				}
 				if(-COLORDT > red || red > COLORDT){
-					return null;
+					continue;
 				}
 				if (-COLORDT > green || green > COLORDT){
-					return null;
+					continue;
 				}
 				Point key = next.getKey();
-				colorMap.remove(key);
-				return key;
+				result.add(key);
+//				colorMap.remove(key);
 			}
 		}
-		return null;
+		for (Point point : result) {
+			colorMap.remove(point);
+		}
+		return result;
 	}
 	/**
 	 * Removes listener

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -122,7 +123,7 @@ public class Pixell {
 	public synchronized void addPictureToMap(Color c, String path) {
 		System.out.println(path + ": " + c.toString());
 		map.put(path, c);
-		Point point = mainPicture.findColorOnMosaic(c);
+		List<Point> point = mainPicture.findColorOnMosaic(c);
 		if (point != null) {
 			System.err.println("Pasujący kolor! ");
 			try {
