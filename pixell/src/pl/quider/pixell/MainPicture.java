@@ -32,7 +32,7 @@ public class MainPicture extends JComponent implements ImageInserted{
 	private List<ImagePaintedListener> listeners;
 	private double lenFactor = 0.015;
 	
-	private final int COLORDT  =  20;
+	private final int COLORDT  =  5;
 	/**
 	 * 
 	 * @param picturePath
