@@ -10,6 +10,10 @@ import javax.swing.border.EmptyBorder;
 
 public class SettingsWindow extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -227402118063922315L;
 	private JPanel contentPane;
 
 	/**

@@ -1,17 +1,21 @@
 package pl.quider.pixell.settings;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTextPane;
-import java.awt.FlowLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.TitledBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ImageSettings extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3064371471654125308L;
 	private JTextField texImageFactor;
 	private JTextField textColorDT;
 
@@ -27,6 +31,12 @@ public class ImageSettings extends JPanel {
 		panel_1.setBorder(new TitledBorder(null, "Przeskok koloru", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		JButton btnZapisz = new JButton("Zapisz");
+		btnZapisz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.setProperty(SettingsUtils.IMAGE_COLOR_DT, textColorDT.getText());
+				System.setProperty(SettingsUtils.IMAGE_FACTOR, texImageFactor.getText());
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -103,6 +113,14 @@ public class ImageSettings extends JPanel {
 		);
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
-
+		initialize();
+	}
+	
+	private void initialize(){
+		String imageFactor = System.getProperty(SettingsUtils.IMAGE_FACTOR, "0.025");
+		String imageColorDT = System.getProperty(SettingsUtils.IMAGE_COLOR_DT, "3");
+		
+		texImageFactor.setText(imageFactor);
+		textColorDT.setText(imageColorDT);
 	}
 }

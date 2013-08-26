@@ -20,6 +20,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import pl.quider.pixell.events.ImagePaintedListener;
+import pl.quider.pixell.settings.SettingsUtils;
+import pl.quider.pixell.settings.SettingsWindow;
+
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
@@ -27,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
 public class Pixell {
+	public static final String VERSION = "beta 1.1";
 
 	private JFrame frmPixellMosaic;
 	private MainPicture mainPicture;
@@ -36,6 +40,11 @@ public class Pixell {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		String property = System.getProperty(SettingsUtils.VERSION, "Beta");
+		if (!property.equals("Beta 1.1")) {
+			System.setProperty(SettingsUtils.VERSION, VERSION);
+		}
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -87,20 +96,25 @@ public class Pixell {
 
 		JMenu mnProgram = new JMenu("Program");
 		menuBar.add(mnProgram);
-		
+
 		JMenuItem menuSettings = new JMenuItem("Ustawienia");
+		menuSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SettingsWindow().setVisible(true);
+			}
+		});
 		menuSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
 		menuSettings.setIcon(new ImageIcon(Pixell.class.getResource("/resources/advancedsettings.png")));
 		mnProgram.add(menuSettings);
-		
+
 		JMenuItem menuCheckActualization = new JMenuItem("Sprawd\u017A aktualizacj\u0119");
 		menuCheckActualization.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		menuCheckActualization.setIcon(new ImageIcon(Pixell.class.getResource("/resources/box_download.png")));
 		mnProgram.add(menuCheckActualization);
-		
+
 		JSeparator separator = new JSeparator();
 		mnProgram.add(separator);
-		
+
 		JMenuItem menuExit = new JMenuItem("Wyjd\u017A");
 		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		menuExit.setIcon(new ImageIcon(Pixell.class.getResource("/resources/exit.png")));
@@ -146,18 +160,18 @@ public class Pixell {
 			}
 		});
 		mnObraz.add(mntmKatalogObrazkw);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		mnObraz.add(separator_1);
-		
+
 		JMenuItem menuSaveMosaic = new JMenuItem("Zapisz obraz");
 		menuSaveMosaic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		menuSaveMosaic.setIcon(new ImageIcon(Pixell.class.getResource("/resources/3_disc.png")));
 		mnObraz.add(menuSaveMosaic);
-		
+
 		JSeparator separator_2 = new JSeparator();
 		mnObraz.add(separator_2);
-		
+
 		JMenuItem menuClearMainImage = new JMenuItem("Wyczy\u015B\u0107 obraz g\u0142\u00F3wny");
 		menuClearMainImage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, InputEvent.SHIFT_MASK));
 		menuClearMainImage.setIcon(new ImageIcon(Pixell.class.getResource("/resources/recycle_bin_f.png")));
