@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -36,6 +37,9 @@ public class Pixell {
 	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
 
+	static{
+		
+	}
 	/**
 	 * Launch the application.
 	 */
