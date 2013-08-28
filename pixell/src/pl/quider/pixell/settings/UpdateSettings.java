@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
+import pl.quider.pixell.Register;
+
 public class UpdateSettings extends JPanel {
 
 	/**
@@ -42,9 +44,10 @@ public class UpdateSettings extends JPanel {
 		JButton btnZapisz = new JButton("Zapisz");
 		btnZapisz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.setProperty(SettingsUtils.UPDATE_AUTOENABLED, new Boolean(cbEnableAutoUpdate.isSelected()).toString());
-				System.setProperty(SettingsUtils.UPDATE_AT_START, new Boolean(rdbtnSprawdzajPrzyStarcie.isSelected()).toString());
-				System.setProperty(SettingsUtils.UPDATE_AT_END, new Boolean(rdbtnSprawdzajPrzyZamykaniu.isSelected()).toString());
+				Register.getInstance().setProperty(SettingsUtils.UPDATE_AUTOENABLED, new Boolean(cbEnableAutoUpdate.isSelected()).toString());
+				Register.getInstance().setProperty(SettingsUtils.UPDATE_AT_START, new Boolean(rdbtnSprawdzajPrzyStarcie.isSelected()).toString());
+				Register.getInstance().setProperty(SettingsUtils.UPDATE_AT_END, new Boolean(rdbtnSprawdzajPrzyZamykaniu.isSelected()).toString());
+				Register.getInstance().save();
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -108,8 +111,12 @@ public class UpdateSettings extends JPanel {
 	}
 	
 	private void initialize(){
-		String autoupdate = System.getProperty(SettingsUtils.UPDATE_AUTOENABLED, "true");
+		String autoupdate = Register.getInstance().getProperty(SettingsUtils.UPDATE_AUTOENABLED, "true");
+		String startupdate = Register.getInstance().getProperty(SettingsUtils.UPDATE_AT_START, "true");
+		String stopupdate = Register.getInstance().getProperty(SettingsUtils.UPDATE_AT_END, "false");
 		this.cbEnableAutoUpdate.setSelected(new Boolean(autoupdate));
-		this.lblVerson.setText(System.getProperty(SettingsUtils.VERSION, "beta"));
+		this.rdbtnSprawdzajPrzyStarcie.setSelected(new Boolean(startupdate));
+		this.rdbtnSprawdzajPrzyZamykaniu.setSelected(new Boolean(stopupdate));
+		this.lblVerson.setText(Register.getInstance().getProperty(SettingsUtils.VERSION, "beta"));
 	}
 }

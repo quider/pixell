@@ -9,6 +9,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+
+import pl.quider.pixell.Register;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -34,7 +37,7 @@ public class ProgramSettings extends JPanel {
 		JButton button = new JButton("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String property = System.getProperty(SettingsUtils.PROGRAM_DIRECTORY);
+				String property = Register.getInstance().getProperty(SettingsUtils.PROGRAM_DIRECTORY, null);
 				File direc = null;
 				if(property != null){
 					direc = new File(property);
@@ -45,7 +48,8 @@ public class ProgramSettings extends JPanel {
 				if (i == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fc.getSelectedFile();
 					textDefaultDirectory.setText(selectedFile.getAbsolutePath());
-					System.setProperty(SettingsUtils.PROGRAM_DIRECTORY, textDefaultDirectory.getText());
+					//
+					Register.getInstance().setProperty(SettingsUtils.PROGRAM_DIRECTORY, textDefaultDirectory.getText());
 				}
 			}
 		});
@@ -54,7 +58,8 @@ public class ProgramSettings extends JPanel {
 		JButton btnZapisz = new JButton("Zapisz");
 		btnZapisz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.setProperty(SettingsUtils.PROGRAM_DIRECTORY, textDefaultDirectory.getText());
+				Register.getInstance().setProperty(SettingsUtils.PROGRAM_DIRECTORY, textDefaultDirectory.getText());
+				Register.getInstance().save();
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -89,7 +94,8 @@ public class ProgramSettings extends JPanel {
 	}
 	
 	private void initialize(){
-		String programDirectory = System.getProperty(SettingsUtils.PROGRAM_DIRECTORY);
+		
+		String programDirectory = Register.getInstance().getProperty(SettingsUtils.PROGRAM_DIRECTORY, null);
 		textDefaultDirectory.setText(programDirectory);
 		
 	}

@@ -8,6 +8,9 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
+
+import pl.quider.pixell.Register;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -33,8 +36,9 @@ public class ImageSettings extends JPanel {
 		JButton btnZapisz = new JButton("Zapisz");
 		btnZapisz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.setProperty(SettingsUtils.IMAGE_COLOR_DT, textColorDT.getText());
-				System.setProperty(SettingsUtils.IMAGE_FACTOR, texImageFactor.getText());
+				Register.getInstance().setProperty(SettingsUtils.IMAGE_COLOR_DT, textColorDT.getText());
+				Register.getInstance().setProperty(SettingsUtils.IMAGE_FACTOR, texImageFactor.getText());
+				Register.getInstance().save();
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -117,8 +121,8 @@ public class ImageSettings extends JPanel {
 	}
 	
 	private void initialize(){
-		String imageFactor = System.getProperty(SettingsUtils.IMAGE_FACTOR, "0.025");
-		String imageColorDT = System.getProperty(SettingsUtils.IMAGE_COLOR_DT, "3");
+		String imageFactor = Register.getInstance().getProperty(SettingsUtils.IMAGE_FACTOR, "0.025");
+		String imageColorDT = Register.getInstance().getProperty(SettingsUtils.IMAGE_COLOR_DT, "3");
 		
 		texImageFactor.setText(imageFactor);
 		textColorDT.setText(imageColorDT);

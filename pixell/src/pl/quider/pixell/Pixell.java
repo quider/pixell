@@ -38,13 +38,20 @@ public class Pixell {
 	public Map<String, Color> map = new HashMap<String, Color>();
 
 	static{
+		Boolean autoenabled = new Boolean (Register.getInstance().getProperty(SettingsUtils.UPDATE_AUTOENABLED, null));
+		if(autoenabled){
+			Boolean updateAtStart = new Boolean(Register.getInstance().getProperty(SettingsUtils.UPDATE_AT_START, null));
+			if(updateAtStart){
+				//TODO: Run update in new thread
+			}
+		}
 		
 	}
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		String property = System.getProperty(SettingsUtils.VERSION, "Beta");
+		String property = Register.getInstance().getProperty(SettingsUtils.VERSION, "Beta");
 		if (!property.equals("Beta 1.1")) {
 			System.setProperty(SettingsUtils.VERSION, VERSION);
 		}
