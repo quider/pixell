@@ -1,7 +1,5 @@
 package pl.quider.pixell.github;
 
-import java.util.List;
-
 public class Issue {
 	private String url;
 	private String labels_url;
@@ -12,7 +10,7 @@ public class Issue {
 	private int number;
 	private String title;
 	private User user;
-	private List<Label> labels;
+	private Label[] labels;
 	private String state;
 	private User assignee;
 	private Milestone milestone;
@@ -133,13 +131,13 @@ public class Issue {
 	/**
 	 * @return the labels
 	 */
-	public List<Label> getLabels() {
+	public Label[] getLabels() {
 		return labels;
 	}
 	/**
 	 * @param labels the labels to set
 	 */
-	public void setLabels(List<Label> labels) {
+	public void setLabels(Label[] labels) {
 		this.labels = labels;
 	}
 	/**
@@ -251,5 +249,10 @@ public class Issue {
 		this.body = body;
 	}
 
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("title:").append(getTitle()).append("\n");		
+		return sb.toString();
+	}
 }

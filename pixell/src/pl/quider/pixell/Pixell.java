@@ -21,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import pl.quider.pixell.events.ImagePaintedListener;
+import pl.quider.pixell.issues.IssueWindow;
 import pl.quider.pixell.settings.SettingsUtils;
 import pl.quider.pixell.settings.SettingsWindow;
 
@@ -122,6 +123,14 @@ public class Pixell {
 		menuCheckActualization.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		menuCheckActualization.setIcon(new ImageIcon(Pixell.class.getResource("/resources/box_download.png")));
 		mnProgram.add(menuCheckActualization);
+		
+		JMenuItem mntmZgoBd = new JMenuItem("Zgłoś błąd");
+		mntmZgoBd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new IssueWindow().setVisible(true);
+			}
+		});
+		mnProgram.add(mntmZgoBd);
 
 		JSeparator separator = new JSeparator();
 		mnProgram.add(separator);
