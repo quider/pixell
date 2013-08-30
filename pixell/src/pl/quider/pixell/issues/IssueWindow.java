@@ -91,6 +91,7 @@ public class IssueWindow extends JFrame {
 							textTitle.setEditable(false);
 							textbody.setText(issue.getBody());
 							textbody.setEditable(false);
+							textbody.setEnabled(false);
 							lblnumber.setText(Integer.toString(issue.getNumber()));
 							lblOpen.setText(issue.getState());
 							labeldate.setText(issue.getCreated_at());

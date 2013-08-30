@@ -20,6 +20,7 @@ import javax.swing.SwingWorker;
 
 import pl.quider.pixell.events.ImageInserted;
 import pl.quider.pixell.events.ImagePaintedListener;
+import pl.quider.pixell.settings.SettingsUtils;
 
 public class MainPicture extends JComponent implements ImageInserted{
 	/**
@@ -30,15 +31,17 @@ public class MainPicture extends JComponent implements ImageInserted{
 	private BufferedImage bi;
 	private HashMap<Point,Color> colorMap;
 	private List<ImagePaintedListener> listeners;
-	private double lenFactor = 0.015;
+	private double lenFactor;
 	
-	private final int COLORDT  =  5;
+	private int COLORDT ;
 	/**
 	 * 
 	 * @param picturePath
 	 * @throws IOException
 	 */
 	public MainPicture(String picturePath) throws IOException {
+		COLORDT = new Integer(Register.getInstance().getProperty(SettingsUtils.IMAGE_COLOR_DT, "3"));
+		lenFactor = new Double(Register.getInstance().getProperty(SettingsUtils.IMAGE_FACTOR,"0.015"));
 		listeners = new ArrayList<ImagePaintedListener>();
 		if (picturePath != null && !picturePath.isEmpty()) {
 			readInPicture(picturePath);
