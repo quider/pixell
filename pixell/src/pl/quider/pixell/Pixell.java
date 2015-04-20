@@ -33,6 +33,18 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.swing.JProgressBar;
+import javax.swing.JPanel;
+import javax.swing.JList;
+import java.awt.FlowLayout;
+import javax.swing.AbstractListModel;
+import javax.swing.JTextField;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JLabel;
+import javax.swing.border.BevelBorder;
 
 public class Pixell {
 	public static final String VERSION = "beta 1.1";
@@ -40,6 +52,7 @@ public class Pixell {
 	private JFrame frmPixellMosaic;
 	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
+	private JTextField textField;
 
 	static {
 		Boolean autoenabled = new Boolean(Register.getInstance().getProperty(
@@ -96,7 +109,7 @@ public class Pixell {
 	private void initialize() throws IOException {
 		frmPixellMosaic = new JFrame();
 		frmPixellMosaic.setTitle("Pixell - mosaic maker");
-		frmPixellMosaic.setBounds(100, 100, 450, 300);
+		frmPixellMosaic.setBounds(100, 100, 538, 352);
 
 		mainPicture = new MainPicture("");
 		mainPicture.addListener(new ImagePaintedListener() {
@@ -110,6 +123,30 @@ public class Pixell {
 			}
 		});
 		frmPixellMosaic.getContentPane().add(mainPicture, BorderLayout.CENTER);
+		
+		JProgressBar progressBar = new JProgressBar();
+		frmPixellMosaic.getContentPane().add(progressBar, BorderLayout.NORTH);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		frmPixellMosaic.getContentPane().add(panel, BorderLayout.WEST);
+		panel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("86px"),
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("39px"),},
+			new RowSpec[] {
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("24px"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		JLabel lblObrazki = new JLabel("Obrazki");
+		panel.add(lblObrazki, "2, 2, 3, 1");
+		
+		textField = new JTextField();
+		panel.add(textField, "2, 4, 3, 1, fill, center");
+		textField.setColumns(10);
 		frmPixellMosaic.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
