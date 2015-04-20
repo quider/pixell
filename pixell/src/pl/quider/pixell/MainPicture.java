@@ -219,6 +219,7 @@ public class MainPicture extends JComponent implements ImageInserted{
 		}
 	}
 
+
 	@Override
 	public void onImageInsertion() {
 		this.repaint();

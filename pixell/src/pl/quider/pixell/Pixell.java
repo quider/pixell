@@ -27,8 +27,12 @@ import pl.quider.pixell.settings.SettingsWindow;
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class Pixell {
 	public static final String VERSION = "beta 1.1";
@@ -37,21 +41,25 @@ public class Pixell {
 	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
 
-	static{
-		Boolean autoenabled = new Boolean (Register.getInstance().getProperty(SettingsUtils.UPDATE_AUTOENABLED, null));
-		if(autoenabled){
-			Boolean updateAtStart = new Boolean(Register.getInstance().getProperty(SettingsUtils.UPDATE_AT_START, null));
-			if(updateAtStart){
-				//TODO: Run update in new thread
+	static {
+		Boolean autoenabled = new Boolean(Register.getInstance().getProperty(
+				SettingsUtils.UPDATE_AUTOENABLED, null));
+		if (autoenabled) {
+			Boolean updateAtStart = new Boolean(Register.getInstance()
+					.getProperty(SettingsUtils.UPDATE_AT_START, null));
+			if (updateAtStart) {
+				// TODO: Run update in new thread
 			}
 		}
-		
+
 	}
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		String property = Register.getInstance().getProperty(SettingsUtils.VERSION, "Beta");
+		String property = Register.getInstance().getProperty(
+				SettingsUtils.VERSION, "Beta");
 		if (!property.equals("Beta 1.1")) {
 			System.setProperty(SettingsUtils.VERSION, VERSION);
 		}
@@ -95,7 +103,9 @@ public class Pixell {
 
 			@Override
 			public void onImagePainted(Image bi) {
-				frmPixellMosaic.setBounds(frmPixellMosaic.getX(), frmPixellMosaic.getY(), bi.getWidth(null) + 20, bi.getHeight(null) + 70);
+				frmPixellMosaic.setBounds(frmPixellMosaic.getX(),
+						frmPixellMosaic.getY(), bi.getWidth(null) + 20,
+						bi.getHeight(null) + 70);
 
 			}
 		});
@@ -114,36 +124,46 @@ public class Pixell {
 				new SettingsWindow().setVisible(true);
 			}
 		});
-		menuSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
-		menuSettings.setIcon(new ImageIcon(Pixell.class.getResource("/resources/advancedsettings.png")));
+		menuSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+				InputEvent.CTRL_MASK));
+		menuSettings.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/advancedsettings.png")));
 		mnProgram.add(menuSettings);
 
-		JMenuItem menuCheckActualization = new JMenuItem("Sprawd\u017A aktualizacj\u0119");
-		menuCheckActualization.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
-		menuCheckActualization.setIcon(new ImageIcon(Pixell.class.getResource("/resources/box_download.png")));
+		JMenuItem menuCheckActualization = new JMenuItem(
+				"Sprawd\u017A aktualizacj\u0119");
+		menuCheckActualization.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_A, InputEvent.CTRL_MASK));
+		menuCheckActualization.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/box_download.png")));
 		mnProgram.add(menuCheckActualization);
 
 		JSeparator separator = new JSeparator();
 		mnProgram.add(separator);
 
 		JMenuItem menuExit = new JMenuItem("Wyjd\u017A");
-		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
-		menuExit.setIcon(new ImageIcon(Pixell.class.getResource("/resources/exit.png")));
+		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				InputEvent.CTRL_MASK));
+		menuExit.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/exit.png")));
 		mnProgram.add(menuExit);
 
 		JMenu mnObraz = new JMenu("Obraz");
 		menuBar.add(mnObraz);
 
 		JMenuItem mntmGwnyObraz = new JMenuItem("G\u0142\u00F3wny obraz");
-		mntmGwnyObraz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
-		mntmGwnyObraz.setIcon(new ImageIcon(Pixell.class.getResource("/resources/pics_2.png")));
+		mntmGwnyObraz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				InputEvent.CTRL_MASK));
+		mntmGwnyObraz.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/pics_2.png")));
 		mntmGwnyObraz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				JFileChooser fc = new JFileChooser();
 				int showOpenDialog = fc.showOpenDialog(frmPixellMosaic);
 				if (showOpenDialog == JFileChooser.APPROVE_OPTION) {
 					try {
-						mainPicture.readInPicture(fc.getSelectedFile().getPath());
+						mainPicture.readInPicture(fc.getSelectedFile()
+								.getPath());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -153,8 +173,10 @@ public class Pixell {
 		mnObraz.add(mntmGwnyObraz);
 
 		JMenuItem mntmKatalogObrazkw = new JMenuItem("Katalog obrazk\u00F3w");
-		mntmKatalogObrazkw.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
-		mntmKatalogObrazkw.setIcon(new ImageIcon(Pixell.class.getResource("/resources/directory_accept.png")));
+		mntmKatalogObrazkw.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				InputEvent.CTRL_MASK));
+		mntmKatalogObrazkw.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/directory_accept.png")));
 		mntmKatalogObrazkw.addActionListener(new ActionListener() {
 
 			@Override
@@ -164,7 +186,8 @@ public class Pixell {
 				int i = fc.showOpenDialog(Pixell.this.frmPixellMosaic);
 				if (i == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fc.getSelectedFile();
-					Runnable sniffer = new CatalogSniffer(Pixell.this, selectedFile);
+					Runnable sniffer = new CatalogSniffer(Pixell.this,
+							selectedFile);
 					Thread executor = new Thread(sniffer);
 					executor.start();
 				}
@@ -176,16 +199,38 @@ public class Pixell {
 		mnObraz.add(separator_1);
 
 		JMenuItem menuSaveMosaic = new JMenuItem("Zapisz obraz");
-		menuSaveMosaic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-		menuSaveMosaic.setIcon(new ImageIcon(Pixell.class.getResource("/resources/3_disc.png")));
+		menuSaveMosaic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					BufferedImage bi = Pixell.this.mainPicture.getBi();
+					File outputfile = new File("mainImage.jpg");
+					ImageIO.write(bi, "jpg", outputfile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		menuSaveMosaic.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		menuSaveMosaic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				InputEvent.CTRL_MASK));
+		menuSaveMosaic.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/3_disc.png")));
 		mnObraz.add(menuSaveMosaic);
 
 		JSeparator separator_2 = new JSeparator();
 		mnObraz.add(separator_2);
 
-		JMenuItem menuClearMainImage = new JMenuItem("Wyczy\u015B\u0107 obraz g\u0142\u00F3wny");
-		menuClearMainImage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, InputEvent.SHIFT_MASK));
-		menuClearMainImage.setIcon(new ImageIcon(Pixell.class.getResource("/resources/recycle_bin_f.png")));
+		JMenuItem menuClearMainImage = new JMenuItem(
+				"Wyczy\u015B\u0107 obraz g\u0142\u00F3wny");
+		menuClearMainImage.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_DELETE, InputEvent.SHIFT_MASK));
+		menuClearMainImage.setIcon(new ImageIcon(Pixell.class
+				.getResource("/resources/recycle_bin_f.png")));
 		mnObraz.add(menuClearMainImage);
 	}
 
@@ -196,7 +241,9 @@ public class Pixell {
 		if (point != null) {
 			System.err.println("Pasujący kolor! ");
 			try {
-				ReplaceColorWithImage replaceColorWithImage = new ReplaceColorWithImage(point, mainPicture.getBi(), ImageIO.read(new File(path)));
+				ReplaceColorWithImage replaceColorWithImage = new ReplaceColorWithImage(
+						point, mainPicture.getBi(),
+						ImageIO.read(new File(path)));
 				replaceColorWithImage.addListener(mainPicture);
 				Thread t = new Thread(replaceColorWithImage);
 				t.start();
