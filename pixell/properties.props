@@ -1,8 +1,11 @@
 #W\u0142a\u015Bciwo\u015Bci
 #Mon Apr 20 17:29:19 CEST 2015
 version=Beta
-imagefactor=0.005
+imagefactor=0.015
 defaultdirectory=D\:\\Documents
+updateend=false
+updatestart=true
+autoupdateenabled=true
 imagecolordt=3
 autoupdateenabled=true
 updatestart=true
