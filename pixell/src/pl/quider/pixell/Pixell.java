@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -19,9 +18,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import pl.quider.pixell.events.ImagePaintedListener;
-import pl.quider.pixell.issues.IssueWindow;
+//import pl.quider.pixell.issues.IssueWindow;
 import pl.quider.pixell.settings.SettingsUtils;
 import pl.quider.pixell.settings.SettingsWindow;
 
@@ -34,18 +35,20 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JProgressBar;
 import javax.swing.JPanel;
-import javax.swing.JList;
-import java.awt.FlowLayout;
-import javax.swing.AbstractListModel;
 import javax.swing.JTextField;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
+
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.JButton;
 
 public class Pixell {
 	public static final String VERSION = "beta 1.1";
@@ -53,7 +56,7 @@ public class Pixell {
 	private JFrame frmPixellMosaic;
 	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
-	private JTextField textField;
+	private JTextField txtFilesCount;
 
 	static {
 		Boolean autoenabled = new Boolean(Register.getInstance().getProperty(
@@ -72,6 +75,24 @@ public class Pixell {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+            // Set cross-platform Java L&F (also called "Metal")
+        UIManager.setLookAndFeel(
+            UIManager.getSystemLookAndFeelClassName());
+    } 
+    catch (UnsupportedLookAndFeelException e) {
+       // handle exception
+    }
+    catch (ClassNotFoundException e) {
+       // handle exception
+    }
+    catch (InstantiationException e) {
+       // handle exception
+    }
+    catch (IllegalAccessException e) {
+       // handle exception
+    }
+		
 		String property = Register.getInstance().getProperty(
 				SettingsUtils.VERSION, "Beta");
 		if (!property.equals("Beta 1.1")) {
@@ -129,7 +150,7 @@ public class Pixell {
 		frmPixellMosaic.getContentPane().add(progressBar, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		frmPixellMosaic.getContentPane().add(panel, BorderLayout.WEST);
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
@@ -140,14 +161,34 @@ public class Pixell {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("24px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblObrazki = new JLabel("Obrazki");
+		JLabel lblObrazki = new JLabel("Ilo\u015B\u0107 obrazk\u00F3w:");
 		panel.add(lblObrazki, "2, 2, 3, 1");
 		
-		textField = new JTextField();
-		panel.add(textField, "2, 4, 3, 1, fill, center");
-		textField.setColumns(10);
+		txtFilesCount = new JTextField();
+		txtFilesCount.setEditable(false);
+		panel.add(txtFilesCount, "2, 4, 3, 1, fill, center");
+		txtFilesCount.setColumns(10);
+		
+		JButton btnMosaic = new JButton("Rozpocznij!");
+		panel.add(btnMosaic, "2, 20, 3, 1");
 		frmPixellMosaic.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -176,10 +217,10 @@ public class Pixell {
 				.getResource("/resources/box_download.png")));
 		mnProgram.add(menuCheckActualization);
 		
-		JMenuItem mntmZgoBd = new JMenuItem("ZgÅ‚oÅ› bÅ‚Ä…d");
+		JMenuItem mntmZgoBd = new JMenuItem("Zg³oœ b³¹d");
 		mntmZgoBd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new IssueWindow().setVisible(true);
+//				new IssueWindow().setVisible(true);
 			}
 		});
 		mnProgram.add(mntmZgoBd);
@@ -232,8 +273,9 @@ public class Pixell {
 				int i = fc.showOpenDialog(Pixell.this.frmPixellMosaic);
 				if (i == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fc.getSelectedFile();
+					
 					Runnable sniffer = new CatalogSniffer(Pixell.this,
-							selectedFile);
+							selectedFile, Pixell.this.txtFilesCount);
 					Thread executor = new Thread(sniffer);
 					executor.start();
 				}
@@ -285,7 +327,7 @@ public class Pixell {
 		map.put(path, c);
 		List<Point> point = mainPicture.findColorOnMosaic(c);
 		if (point != null) {
-			System.err.println("PasujÄ…cy kolor! ");
+			System.err.println("Pasuj¹cy kolor! ");
 			try {
 				ReplaceColorWithImage replaceColorWithImage = new ReplaceColorWithImage(
 						point, mainPicture.getBi(),
