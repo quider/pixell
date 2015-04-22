@@ -130,7 +130,7 @@ public class Pixell {
 	 */
 	private void initialize() throws IOException {
 		frmPixellMosaic = new JFrame();
-		frmPixellMosaic.setTitle("Pixell - mosaic maker");
+		frmPixellMosaic.setTitle("Pixell - mosaic maker Beta 1.3");
 		frmPixellMosaic.setBounds(100, 100, 538, 352);
 
 		mainPicture = new MainPicture("");
