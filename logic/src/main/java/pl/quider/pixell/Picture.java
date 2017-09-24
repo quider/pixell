@@ -1,19 +1,14 @@
 package pl.quider.pixell;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+import javax.xml.ws.WebServiceException;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.xml.ws.WebServiceException;
-
-import com.sun.xml.internal.ws.Closeable;
-
-public class Picture extends JComponent implements Closeable {
+public class Picture implements , Serializable {
 	/**
 	 * 
 	 */

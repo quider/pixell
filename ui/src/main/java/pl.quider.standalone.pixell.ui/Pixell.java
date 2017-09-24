@@ -1,4 +1,4 @@
-package pl.quider.pixell;
+package pl.quider.standalone.pixell.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -217,7 +217,7 @@ public class Pixell {
 				.getResource("/resources/box_download.png")));
 		mnProgram.add(menuCheckActualization);
 		
-		JMenuItem mntmZgoBd = new JMenuItem("Zg³oœ b³¹d");
+		JMenuItem mntmZgoBd = new JMenuItem("Zgï¿½oï¿½ bï¿½ï¿½d");
 		mntmZgoBd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 //				new IssueWindow().setVisible(true);
@@ -327,7 +327,7 @@ public class Pixell {
 		map.put(path, c);
 		List<Point> point = mainPicture.findColorOnMosaic(c);
 		if (point != null) {
-			System.err.println("Pasuj¹cy kolor! ");
+			System.err.println("Pasujï¿½cy kolor! ");
 			try {
 				ReplaceColorWithImage replaceColorWithImage = new ReplaceColorWithImage(
 						point, mainPicture.getBi(),
