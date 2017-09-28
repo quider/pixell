@@ -3,14 +3,13 @@
  */
 package pl.quider.pixell;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import pl.quider.pixell.events.ImageInserted;
+import pl.quider.pixell.model.Point;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.quider.pixell.events.ImageInserted;
 
 /**
  * @author Adrian

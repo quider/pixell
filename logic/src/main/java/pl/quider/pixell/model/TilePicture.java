@@ -1,4 +1,4 @@
-package pl.quider.pixell;
+package pl.quider.pixell.model;
 
 import java.io.IOException;
 

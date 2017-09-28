@@ -1,8 +1,10 @@
 package pl.quider.pixell;
 
+import pl.quider.pixell.model.Picture;
+
 import java.io.IOException;
 
-public class MosaicColorPicture extends Picture{
+public class MosaicColorPicture extends Picture {
 
     /**
      * @param picturePath

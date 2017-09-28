@@ -1,7 +1,6 @@
-package pl.quider.pixell;
+package pl.quider.pixell.model;
 
 import javax.imageio.ImageIO;
-import javax.xml.ws.WebServiceException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

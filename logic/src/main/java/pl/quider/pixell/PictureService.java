@@ -4,6 +4,9 @@ import pl.quider.pixell.eventArgs.ColorFoundEventArgs;
 import pl.quider.pixell.eventArgs.ImageMatchToColorEventArgs;
 import pl.quider.pixell.events.OnColorFoundEvent;
 import pl.quider.pixell.events.OnImageMatchToColorEvent;
+import pl.quider.pixell.model.MainPicture;
+import pl.quider.pixell.model.Picture;
+import pl.quider.pixell.model.Point;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -25,7 +28,7 @@ public class PictureService implements OnColorFoundEvent, OnImageMatchToColorEve
      * @param c
      */
     public List<Picture> findTileColorOnMosaic(Color c, MosaicColorPicture colorPicture){
-        ArrayList<Point> result = new ArrayList<Point>();
+        ArrayList<pl.quider.pixell.model.Point> result = new ArrayList<Point>();
 //        Set<Map.Entry<Point,Color>> entrySet = colorMap.entrySet();
 //        Iterator<Map.Entry<Point, Color>> iterator = entrySet.iterator();
 //        while(iterator.hasNext()){

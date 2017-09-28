@@ -6,7 +6,7 @@ package pl.quider.pixell.tests;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import pl.quider.pixell.Picture;
+import pl.quider.pixell.model.Picture;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -70,7 +70,7 @@ public class PictureTest {
 
 
 	/**
-	 * Test method for {@link pl.quider.pixell.Picture#getAverageColor(java.awt.image.BufferedImage)}.
+	 * Test method for {@link Picture#getAverageColor(java.awt.image.BufferedImage)}.
 	 */
 	@Test
 	public void testGetAverageColor() {

@@ -1,5 +1,6 @@
-package pl.quider.pixell;
+package pl.quider.pixell.model;
 
+import pl.quider.pixell.Register;
 import pl.quider.pixell.events.ImagePaintedListener;
 import pl.quider.pixell.settings.SettingsUtils;
 
