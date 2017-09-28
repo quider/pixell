@@ -1,5 +1,6 @@
-package pl.quider.pixell;
+package pl.quider.pixell.services;
 
+import pl.quider.pixell.Register;
 import pl.quider.pixell.eventArgs.ImageFileFoundEventArgs;
 
 import java.io.File;

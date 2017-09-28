@@ -7,6 +7,7 @@ import pl.quider.pixell.events.OnImageMatchToColorEvent;
 import pl.quider.pixell.model.MainPicture;
 import pl.quider.pixell.model.Picture;
 import pl.quider.pixell.model.Point;
+import pl.quider.pixell.settings.SettingsUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +18,8 @@ import java.util.function.Consumer;
 public class PictureService implements OnColorFoundEvent, OnImageMatchToColorEvent {
     public List<Consumer<ColorFoundEventArgs>> colorFoundListeners;
     private List<Consumer<ImageMatchToColorEventArgs>> imageMatchToColorListeners;
+    private double lenFactor = new Double(Register.getInstance().getProperty(SettingsUtils.IMAGE_FACTOR, "0.015"));
+    private int COLORDT = new Integer(Register.getInstance().getProperty(SettingsUtils.IMAGE_COLOR_DT, "3"));
 
     public MosaicColorPicture findColorMap(MainPicture mainPicture){
         return null;
@@ -70,7 +73,6 @@ public class PictureService implements OnColorFoundEvent, OnImageMatchToColorEve
     protected Boolean countTileAverageImage( BufferedImage bi) throws Exception {
         int h = bi.getHeight();
         int w = bi.getWidth();
-        float lenFactor = 0.23f;//todo: zmienic to
         int wMini = (int) (w * lenFactor); // szerokosc miniaturowego zdjecia
         int hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
 
@@ -79,7 +81,7 @@ public class PictureService implements OnColorFoundEvent, OnImageMatchToColorEve
         while (y < h && y + hMini < bi.getHeight()) {
             while (x < w && (x + wMini) < bi.getWidth()) {
                 BufferedImage image = bi.getSubimage(x, y, wMini, hMini);
-//                Color color = Picture.getAverageColor(image);
+//                Color color = getAverageColor(image);
                 Graphics2D graphics = (Graphics2D) image.getGraphics();
 //                graphics.setColor(color);
                 colorFoundListeners.parallelStream().forEach(listener->listener.accept((new ColorFoundEventArgs())));

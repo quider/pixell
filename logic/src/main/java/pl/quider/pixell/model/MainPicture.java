@@ -36,7 +36,6 @@ public class MainPicture extends Picture {
 		if (picturePath != null && !picturePath.isEmpty()) {
 //			readInPicture(picturePath);
 		}
-
 	}
 
 	public void paint(Graphics g) {

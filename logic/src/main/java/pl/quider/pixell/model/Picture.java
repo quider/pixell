@@ -26,33 +26,6 @@ public class Picture implements  Serializable {
 		bi = ImageIO.read(new File(picturePath));
 	}
 	
-	/**
-	 * Returns average color of picture
-	 * @return
-	 */
-	public Color getAverageColor(BufferedImage bi){
-		int index = 0;
-		long redSum = 0;
-		long greenSum = 0;
-		long blueSum = 0;
-		//todo: Add parameter here:
-		for (int x = bi.getMinX(); x < bi.getWidth(); x+=4) {
-			for(int y=bi.getMinY(); y < bi.getHeight(); y+=4){
-				int rgb = bi.getRGB(x, y);
-				Color c = new Color(rgb);
-				int red =  c.getRed();
-				redSum += red;
-				int green = c.getGreen();
-				greenSum += green;
-				int blue = c.getBlue();
-				blueSum += blue;
-				c = new Color(red, green, blue);
-				bi.setRGB(x, y, c.getRGB());
-				index++;
-			}
-		}
-		return new Color(new Integer((int) (redSum/index)), (int)greenSum/index, (int)blueSum/index);
-	}
 
 	public Graphics2D getG2d() {
 		return g2d;
