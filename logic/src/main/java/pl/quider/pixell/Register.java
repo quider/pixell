@@ -1,10 +1,6 @@
 package pl.quider.pixell;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -19,10 +15,14 @@ public class Register {
 
 	private Register() {
 		p = new Properties();
+		File propertiesFile = new File("properties.props");
 		try {
-			p.load(new FileReader(new File("properties.props")));
+			if (!propertiesFile.exists()) {
+				propertiesFile.createNewFile();
+			}
+			p.load(new FileReader(propertiesFile));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -70,7 +70,7 @@ public class Register {
 	 */
 	public void save(){
 		try {
-			p.store(new FileWriter(new File("properties.props")), "W³aœciwoœci");
+			p.store(new FileWriter(new File("properties.props")), "Wï¿½aï¿½ciwoï¿½ci");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

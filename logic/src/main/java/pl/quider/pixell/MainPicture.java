@@ -1,26 +1,14 @@
 package pl.quider.pixell;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import pl.quider.pixell.events.ImagePaintedListener;
+import pl.quider.pixell.settings.SettingsUtils;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.swing.SwingWorker;
-
-import pl.quider.pixell.events.ImageInserted;
-import pl.quider.pixell.events.ImagePaintedListener;
-import pl.quider.pixell.settings.SettingsUtils;
 
 public class MainPicture extends Picture {
 	/**
@@ -76,10 +64,5 @@ public class MainPicture extends Picture {
 			scaled = null;
 			Runtime.getRuntime().gc();
 		}
-	}
-
-
-
-
 	}
 }
