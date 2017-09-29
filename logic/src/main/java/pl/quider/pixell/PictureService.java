@@ -4,7 +4,6 @@ import pl.quider.pixell.eventArgs.ColorFoundEventArgs;
 import pl.quider.pixell.eventArgs.ImageMatchToColorEventArgs;
 import pl.quider.pixell.events.OnColorFoundEvent;
 import pl.quider.pixell.events.OnImageMatchToColorEvent;
-import pl.quider.pixell.model.MainPicture;
 import pl.quider.pixell.model.Picture;
 import pl.quider.pixell.model.Point;
 import pl.quider.pixell.settings.SettingsUtils;
@@ -21,16 +20,13 @@ public class PictureService implements OnColorFoundEvent, OnImageMatchToColorEve
     private double lenFactor = new Double(Register.getInstance().getProperty(SettingsUtils.IMAGE_FACTOR, "0.015"));
     private int COLORDT = new Integer(Register.getInstance().getProperty(SettingsUtils.IMAGE_COLOR_DT, "3"));
 
-    public MosaicColorPicture findColorMap(MainPicture mainPicture){
-        return null;
-    }
 
     /**
      * Method search images which can match average color passed in argument.
      * finds color on mosaic
      * @param c
      */
-    public List<Picture> findTileColorOnMosaic(Color c, MosaicColorPicture colorPicture){
+    public List<Picture> findTileColorOnMosaic(Color c) {
         ArrayList<pl.quider.pixell.model.Point> result = new ArrayList<Point>();
 //        Set<Map.Entry<Point,Color>> entrySet = colorMap.entrySet();
 //        Iterator<Map.Entry<Point, Color>> iterator = entrySet.iterator();

@@ -1,10 +1,9 @@
-package pl.quider.pixell;
+package pl.quider.pixell.services;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import pl.quider.pixell.services.CatalogSniffer;
 
 import java.io.File;
 import java.nio.file.NotDirectoryException;
