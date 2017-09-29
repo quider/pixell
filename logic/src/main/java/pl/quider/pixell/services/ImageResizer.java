@@ -10,12 +10,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
-public class ImageResizer implements Callable<TilePicture>, OnImageResizedEvent {
+public class ImageResizer implements Runnable, OnImageResizedEvent {
     private final List<Consumer<ImageResizedEventArgs>> imageResizedListeners = new ArrayList<>();
     private final File originalImageFile;
     private final File newDestination;
@@ -28,25 +28,41 @@ public class ImageResizer implements Callable<TilePicture>, OnImageResizedEvent 
     }
 
     @Override
-    public TilePicture call() throws Exception {
-        Integer biggerSide = Integer.valueOf(Register.getInstance().getProperty("tile.image.bigger.side", "20"));
-        BufferedImage read = ImageIO.read(originalImageFile);
-        int h = read.getHeight();
-        int w = read.getWidth();
-        int wMini = (int) (w * lenFactor); // szerokosc miniaturowego zdjecia
-        int hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
+    public void run() {
+        try {
+            BufferedImage read = ImageIO.read(originalImageFile);
+            int h = read.getHeight();
+            int w = read.getWidth();
+            int wMini; // szerokosc miniaturowego zdjecia
+            int hMini;// wysokosc miniturowego zdjecia
+            if (isSquare()) {
+                wMini = (int) (w * lenFactor);
+                hMini = h / (h / wMini);
+            } else {
+                wMini = (int) (w * lenFactor); // szerokosc miniaturowego zdjecia
+                hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
+            }
 
-        BufferedImage resizedImage = new BufferedImage(wMini, hMini, read.getType());
-        Graphics2D g = resizedImage.createGraphics();
-        boolean b = g.drawImage(read, 0, 0, wMini, hMini, null);
-        g.dispose();
-        ImageIO.write(resizedImage, "jpg", getNewDestinationFile());
-        return null;
+            BufferedImage resizedImage = new BufferedImage(wMini, hMini, read.getType());
+            Graphics2D g = resizedImage.createGraphics();
+            boolean b = g.drawImage(read, 0, 0, wMini, hMini, null);
+            g.dispose();
+            TilePicture tilePicture = null;
+            ImageIO.write(resizedImage, "jpg", getNewDestinationFile(originalImageFile.getName()));
+            tilePicture = new TilePicture(getNewDestinationFile(originalImageFile.getName()).getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private File getNewDestinationFile() {
-        //todo: combine paths
-        return null;
+    private boolean isSquare() {
+        return Boolean.parseBoolean(Register.getInstance().getProperty("tile.image.square", "true"));
+    }
+
+    private File getNewDestinationFile(String name) {
+        this.newDestination.mkdirs();
+        final File tile = new File(this.newDestination, name);
+        return tile;
     }
 
     @Override

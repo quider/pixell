@@ -70,7 +70,6 @@ public class PictureTest {
 
 
 	/**
-	 * Test method for {@link Picture#getAverageColor(java.awt.image.BufferedImage)}.
 	 */
 	@Test
 	public void testGetAverageColor() {
@@ -81,7 +80,7 @@ public class PictureTest {
 			fail(e.getMessage());
 		}
 		assertNotNull("Image not loaded",p);
-		assertNotNull("Image not loaded",p.getBi());
+//		assertNotNull("Image not loaded",p.getBi());
 //		Color color = Picture.getAverageColor(p.getBi());
 //		assertNotNull("Color is null",color);
 //

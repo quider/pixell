@@ -20,7 +20,7 @@ public class CatalogSnifferTest {
     @Before
     public void init() {
         try {
-            catalogSniffer = spy(new CatalogSniffer(new File("C:\\Users\\adria\\Pictures\\Camera Roll")));
+            catalogSniffer = spy(new CatalogSniffer(new File("C:\\Users\\Adrian.Kozlowski\\Pictures\\Saved Pictures")));
         } catch (NotDirectoryException e) {
             fail("Catalog snifer creation failed");
         }
