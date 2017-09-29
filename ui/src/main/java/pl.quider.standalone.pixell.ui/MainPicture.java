@@ -2,7 +2,7 @@ package pl.quider.standalone.pixell.ui;
 
 import pl.quider.pixell.Register;
 import pl.quider.pixell.events.ImagePaintedListener;
-import pl.quider.pixell.settings.SettingsUtils;
+import pl.quider.pixell.settings.SettingsConstants;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,8 +29,8 @@ public class MainPicture {
      * @throws IOException
      */
     public MainPicture(String picturePath) throws IOException {
-        COLORDT = new Integer(Register.getInstance().getProperty(SettingsUtils.IMAGE_COLOR_DT, "3"));
-        lenFactor = new Double(Register.getInstance().getProperty(SettingsUtils.IMAGE_FACTOR, "0.015"));
+        COLORDT = new Integer(Register.getInstance().getProperty(SettingsConstants.IMAGE_COLOR_DT, "3"));
+        lenFactor = new Double(Register.getInstance().getProperty(SettingsConstants.IMAGE_FACTOR, "0.015"));
         listeners = new ArrayList<ImagePaintedListener>();
 
     }

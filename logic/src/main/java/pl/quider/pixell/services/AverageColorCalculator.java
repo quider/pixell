@@ -19,9 +19,6 @@ public class AverageColorCalculator implements Callable<Color>, OnColorCalculate
         this.picture = picture;
     }
 
-    public AverageColorCalculator() {
-    }
-
     @Override
     public Color call() throws Exception {
         if (this.picture == null) throw new NullPointerException("No picture");
@@ -36,21 +33,16 @@ public class AverageColorCalculator implements Callable<Color>, OnColorCalculate
             for (int y = bi.getMinY(); y < bi.getHeight(); y += 4) {
                 int rgb = bi.getRGB(x, y);
                 Color c = new Color(rgb);
-                int red = c.getRed();
-                redSum += red;
-                int green = c.getGreen();
-                greenSum += green;
-                int blue = c.getBlue();
-                blueSum += blue;
-                c = new Color(red, green, blue);
-                bi.setRGB(x, y, c.getRGB());
+                redSum += c.getRed();
+                greenSum += c.getGreen();
+                blueSum += c.getBlue();
                 index++;
-                color = new Color(new Integer((int) (redSum / index)), (int) greenSum / index, (int) blueSum / index);
-
-                for (Consumer<ColorCalculatedEventArgs> listener : this.colorCalculatedListener) {
-                    listener.accept(new ColorCalculatedEventArgs(this, color, this.picture));
-                }
             }
+        }
+        color = new Color(new Integer((int) (redSum / index)), (int) greenSum / index, (int) blueSum / index);
+
+        for (Consumer<ColorCalculatedEventArgs> listener : this.colorCalculatedListener) {
+            listener.accept(new ColorCalculatedEventArgs(this, color, this.picture));
         }
         return color;
     }

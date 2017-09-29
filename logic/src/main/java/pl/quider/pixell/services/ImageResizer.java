@@ -4,7 +4,7 @@ import pl.quider.pixell.Register;
 import pl.quider.pixell.eventArgs.ImageResizedEventArgs;
 import pl.quider.pixell.events.OnImageResizedEvent;
 import pl.quider.pixell.model.TilePicture;
-import pl.quider.pixell.settings.SettingsUtils;
+import pl.quider.pixell.settings.SettingsConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class ImageResizer implements Runnable, OnImageResizedEvent {
     private final List<Consumer<ImageResizedEventArgs>> imageResizedListeners = new ArrayList<>();
     private final File originalImageFile;
     private final File newDestination;
-    private double lenFactor = new Double(Register.getInstance().getProperty(SettingsUtils.IMAGE_FACTOR, "0.015"));
+    private double lenFactor = new Double(Register.getInstance().getProperty(SettingsConstants.IMAGE_FACTOR, "0.015"));
 
 
     public ImageResizer(File originalImageFile, File newDestination) {
@@ -48,7 +48,7 @@ public class ImageResizer implements Runnable, OnImageResizedEvent {
             }
             BufferedImage resizedImage = new BufferedImage(wMini, hMini, read.getType());
             Graphics2D g = resizedImage.createGraphics();
-            boolean b = g.drawImage(read, 0, 0, wMini, hMini, null);
+            g.drawImage(read, 0, 0, wMini, hMini, null);
             g.dispose();
             TilePicture tilePicture = null;
             File newDestinationFile = getNewDestinationFile(originalImageFile.getName());

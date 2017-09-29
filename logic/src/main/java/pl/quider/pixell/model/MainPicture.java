@@ -1,5 +1,6 @@
 package pl.quider.pixell.model;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 public class MainPicture extends Picture {
 
     Map<Point, TilePicture> pictureMap;
+    Map<Point, Color> colorMap;
 
     /**
      * @param picturePath
@@ -15,6 +17,7 @@ public class MainPicture extends Picture {
     public MainPicture(String picturePath) throws IOException {
         super(picturePath);
         pictureMap = new HashMap<>();
+        colorMap = new HashMap<>();
     }
 
     public void addPictureToMap(Point point, TilePicture picture) {

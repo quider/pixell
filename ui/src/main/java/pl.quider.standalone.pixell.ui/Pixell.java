@@ -12,10 +12,10 @@ public class Pixell {
 
 	static {
 //		Boolean autoenabled = new Boolean(Register.getInstance().getProperty(
-//				SettingsUtils.UPDATE_AUTOENABLED, null));
+//				SettingsConstants.UPDATE_AUTOENABLED, null));
 //		if (autoenabled) {
 //			Boolean updateAtStart = new Boolean(Register.getInstance()
-//					.getProperty(SettingsUtils.UPDATE_AT_START, null));
+//					.getProperty(SettingsConstants.UPDATE_AT_START, null));
 //			if (updateAtStart) {
 				 TODO: Run update in new thread
 //			}
@@ -44,9 +44,9 @@ public class Pixell {
     }
 		
 //		String property = Register.getInstance().getProperty(
-//				SettingsUtils.VERSION, "Beta");
+//				SettingsConstants.VERSION, "Beta");
 //		if (!property.equals("Beta 1.1")) {
-//			System.setProperty(SettingsUtils.VERSION, VERSION);
+//			System.setProperty(SettingsConstants.VERSION, VERSION);
 //		}
 
 		EventQueue.invokeLater(new Runnable() {

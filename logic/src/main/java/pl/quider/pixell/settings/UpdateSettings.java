@@ -1,18 +1,13 @@
 package pl.quider.pixell.settings;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import pl.quider.pixell.Register;
 
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
-
-import pl.quider.pixell.Register;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UpdateSettings extends JPanel {
 
@@ -44,10 +39,10 @@ public class UpdateSettings extends JPanel {
 		JButton btnZapisz = new JButton("Zapisz");
 		btnZapisz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Register.getInstance().setProperty(SettingsUtils.UPDATE_AUTOENABLED, new Boolean(cbEnableAutoUpdate.isSelected()).toString());
-				Register.getInstance().setProperty(SettingsUtils.UPDATE_AT_START, new Boolean(rdbtnSprawdzajPrzyStarcie.isSelected()).toString());
-				Register.getInstance().setProperty(SettingsUtils.UPDATE_AT_END, new Boolean(rdbtnSprawdzajPrzyZamykaniu.isSelected()).toString());
-				Register.getInstance().save();
+                Register.getInstance().setProperty(SettingsConstants.UPDATE_AUTOENABLED, new Boolean(cbEnableAutoUpdate.isSelected()).toString());
+                Register.getInstance().setProperty(SettingsConstants.UPDATE_AT_START, new Boolean(rdbtnSprawdzajPrzyStarcie.isSelected()).toString());
+                Register.getInstance().setProperty(SettingsConstants.UPDATE_AT_END, new Boolean(rdbtnSprawdzajPrzyZamykaniu.isSelected()).toString());
+                Register.getInstance().save();
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -111,12 +106,12 @@ public class UpdateSettings extends JPanel {
 	}
 	
 	private void initialize(){
-		String autoupdate = Register.getInstance().getProperty(SettingsUtils.UPDATE_AUTOENABLED, "true");
-		String startupdate = Register.getInstance().getProperty(SettingsUtils.UPDATE_AT_START, "true");
-		String stopupdate = Register.getInstance().getProperty(SettingsUtils.UPDATE_AT_END, "false");
-		this.cbEnableAutoUpdate.setSelected(new Boolean(autoupdate));
+        String autoupdate = Register.getInstance().getProperty(SettingsConstants.UPDATE_AUTOENABLED, "true");
+        String startupdate = Register.getInstance().getProperty(SettingsConstants.UPDATE_AT_START, "true");
+        String stopupdate = Register.getInstance().getProperty(SettingsConstants.UPDATE_AT_END, "false");
+        this.cbEnableAutoUpdate.setSelected(new Boolean(autoupdate));
 		this.rdbtnSprawdzajPrzyStarcie.setSelected(new Boolean(startupdate));
 		this.rdbtnSprawdzajPrzyZamykaniu.setSelected(new Boolean(stopupdate));
-		this.lblVerson.setText(Register.getInstance().getProperty(SettingsUtils.VERSION, "beta"));
-	}
+        this.lblVerson.setText(Register.getInstance().getProperty(SettingsConstants.VERSION, "beta"));
+    }
 }
