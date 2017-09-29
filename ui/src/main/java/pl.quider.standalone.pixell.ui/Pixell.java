@@ -1,79 +1,29 @@
 package pl.quider.standalone.pixell.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import pl.quider.pixell.events.ImagePaintedListener;
 //import pl.quider.pixell.issues.IssueWindow;
-import pl.quider.pixell.settings.SettingsUtils;
-import pl.quider.pixell.settings.SettingsWindow;
-
-import javax.swing.JSeparator;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-
-import javax.swing.JProgressBar;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
-
-import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.JButton;
 
 public class Pixell {
-	public static final String VERSION = "beta 1.1";
+    /*public static final String VERSION = "beta 1.1";
 
 	private JFrame frmPixellMosaic;
-	private MainPicture mainPicture;
+//	private MainPicture mainPicture;
 	public Map<String, Color> map = new HashMap<String, Color>();
 	private JTextField txtFilesCount;
 
 	static {
-		Boolean autoenabled = new Boolean(Register.getInstance().getProperty(
-				SettingsUtils.UPDATE_AUTOENABLED, null));
-		if (autoenabled) {
-			Boolean updateAtStart = new Boolean(Register.getInstance()
-					.getProperty(SettingsUtils.UPDATE_AT_START, null));
-			if (updateAtStart) {
-				// TODO: Run update in new thread
-			}
-		}
+//		Boolean autoenabled = new Boolean(Register.getInstance().getProperty(
+//				SettingsUtils.UPDATE_AUTOENABLED, null));
+//		if (autoenabled) {
+//			Boolean updateAtStart = new Boolean(Register.getInstance()
+//					.getProperty(SettingsUtils.UPDATE_AT_START, null));
+//			if (updateAtStart) {
+				 TODO: Run update in new thread
+//			}
+//		}
 
 	}
 
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		try {
             // Set cross-platform Java L&F (also called "Metal")
@@ -93,11 +43,11 @@ public class Pixell {
        // handle exception
     }
 		
-		String property = Register.getInstance().getProperty(
-				SettingsUtils.VERSION, "Beta");
-		if (!property.equals("Beta 1.1")) {
-			System.setProperty(SettingsUtils.VERSION, VERSION);
-		}
+//		String property = Register.getInstance().getProperty(
+//				SettingsUtils.VERSION, "Beta");
+//		if (!property.equals("Beta 1.1")) {
+//			System.setProperty(SettingsUtils.VERSION, VERSION);
+//		}
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -111,9 +61,7 @@ public class Pixell {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
+
 	public Pixell() {
 		try {
 			initialize();
@@ -123,11 +71,7 @@ public class Pixell {
 		}
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 * 
-	 * @throws IOException
-	 */
+
 	private void initialize() throws IOException {
 		frmPixellMosaic = new JFrame();
 		frmPixellMosaic.setTitle("Pixell - mosaic maker Beta 1.3");
@@ -340,5 +284,5 @@ public class Pixell {
 			}
 		}
 	}
-
+*/
 }

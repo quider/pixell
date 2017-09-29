@@ -13,6 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 public class ImageResizer implements Runnable, OnImageResizedEvent {
@@ -40,23 +44,32 @@ public class ImageResizer implements Runnable, OnImageResizedEvent {
                 hMini = h / (h / wMini);
             } else {
                 wMini = (int) (w * lenFactor); // szerokosc miniaturowego zdjecia
-                hMini = h / (h / wMini);// wysokosc miniturowego zdjecia
+                hMini = (int) (h * lenFactor);// wysokosc miniturowego zdjecia
             }
-
             BufferedImage resizedImage = new BufferedImage(wMini, hMini, read.getType());
             Graphics2D g = resizedImage.createGraphics();
             boolean b = g.drawImage(read, 0, 0, wMini, hMini, null);
             g.dispose();
             TilePicture tilePicture = null;
-            ImageIO.write(resizedImage, "jpg", getNewDestinationFile(originalImageFile.getName()));
-            tilePicture = new TilePicture(getNewDestinationFile(originalImageFile.getName()).getAbsolutePath());
+            File newDestinationFile = getNewDestinationFile(originalImageFile.getName());
+            ImageIO.write(resizedImage, "jpg", newDestinationFile);
+            tilePicture = new TilePicture(newDestinationFile.getAbsolutePath());
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            Future<Color> submit = executorService.submit(new AverageColorCalculator(tilePicture));
+            tilePicture.setColor(submit.get());
+            ImageResizedEventArgs imageResizedEventArgs = new ImageResizedEventArgs(this, this.originalImageFile, tilePicture);
+            imageResizedListeners.forEach(listener -> listener.accept(imageResizedEventArgs));
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
 
     private boolean isSquare() {
-        return Boolean.parseBoolean(Register.getInstance().getProperty("tile.image.square", "true"));
+        return Boolean.parseBoolean(Register.getInstance().getProperty("tile.image.square", "false"));
     }
 
     private File getNewDestinationFile(String name) {

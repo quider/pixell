@@ -5,8 +5,8 @@ import pl.quider.pixell.model.TilePicture;
 import java.io.File;
 
 public class ImageResizedEventArgs extends EventArgs {
-    private File originalFile;
-    private TilePicture createdTile;
+    private final File originalFile;
+    private final TilePicture createdTile;
 
     public ImageResizedEventArgs(Object sender, File originalFile, TilePicture createdTile) {
         super(sender);

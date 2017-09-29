@@ -45,7 +45,7 @@ public class CatalogSniffer implements Callable<List<File>> {
             if (!element.isDirectory()) {
                 String ext = element.getName().substring(element.getName().indexOf("."));
                 String[] allowedExtensions = Register.getInstance().getProperty("catalog.sniffer.extensions", ".jpg,").split(",");
-                if (!Arrays.stream(allowedExtensions).anyMatch(allowedExtension -> allowedExtension.equals(ext))) {
+                if (!Arrays.stream(allowedExtensions).anyMatch(allowedExtension -> allowedExtension.equalsIgnoreCase(ext))) {
                     continue;
                 }
                 files++;

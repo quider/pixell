@@ -7,6 +7,13 @@
     <groupId>pl.quider.standalone</groupId>
     <artifactId>pixell.ui</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>pl.quider.standalone</groupId>
+            <artifactId>pixell.logic</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

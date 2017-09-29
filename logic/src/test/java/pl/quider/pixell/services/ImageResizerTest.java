@@ -14,7 +14,7 @@ public class ImageResizerTest {
 
     @Before
     public void setUp() throws Exception {
-        CatalogSniffer catalogSniffer = new CatalogSniffer(new File("C:\\Users\\Adrian.Kozlowski\\Pictures\\Saved Pictures"));
+        CatalogSniffer catalogSniffer = new CatalogSniffer(new File("C:\\Users\\adria\\Pictures\\Camera Roll"));
         call = catalogSniffer.call();
     }
 
@@ -26,13 +26,9 @@ public class ImageResizerTest {
     public void call() throws Exception {
         final ExecutorService executorService = Executors.newFixedThreadPool(11);
         call.stream().parallel().forEach(file -> {
-            executorService.execute(new ImageResizer(file, new File("tiles/")));
+            new ImageResizer(file, new File("tiles/")).run();
 //            final TilePicture picture = new ImageResizer(file, new File("tiles/")).call();
 //            System.out.println(picture.getPath());
-
         });
-
-        while (!executorService.isTerminated()) ;
     }
-
 }
