@@ -46,16 +46,17 @@ public class PrepareMainPicture implements Callable<MainPicture>,
         BufferedImage image = ImageIO.read(workImageFile);
         int dtWidth = image.getWidth() / this.tileWidth;
         int dtHeight = image.getHeight() / this.tileHeight;
-        this.setPointsInImage(dtWidth, dtHeight);
+        this.setPointsInImage(dtWidth, dtHeight, image);
         return null;
     }
 
-    private void setPointsInImage(int dtWidth, int dtHeight) {
+    private void setPointsInImage(int dtWidth, int dtHeight, BufferedImage image) {
         HashSet<Point> points = new HashSet<>();
         for (int x = 0; x < dtWidth; x++) {
             for (int y = 0; y < dtHeight; y++) {
                 Point point = new Point(x * this.tileWidth, y * this.tileHeight, this.tileWidth, tileHeight);
                 points.add(point);
+                this.mainPicture.addColorToMap(point, new AverageColorCalculator(this.mainPicture).getColor(image, x * this.tileWidth, y * this.tileHeight, this.tileWidth, tileHeight));
             }
         }
         this.mainPicture.setPoints(points);
