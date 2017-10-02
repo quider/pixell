@@ -1,5 +1,6 @@
 package pl.quider.pixell.services;
 
+import pl.quider.pixell.Register;
 import pl.quider.pixell.eventArgs.ColorCalculatedEventArgs;
 import pl.quider.pixell.eventArgs.OriginalImageCopiedEventArgs;
 import pl.quider.pixell.eventArgs.TileImageInsertedToMainImageEventArgs;
@@ -8,6 +9,7 @@ import pl.quider.pixell.events.OnOriginalImageCopied;
 import pl.quider.pixell.events.OnTileImageInsertedToMainImageEvent;
 import pl.quider.pixell.model.MainPicture;
 import pl.quider.pixell.model.Point;
+import pl.quider.pixell.settings.SettingsConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,26 +26,29 @@ public class PrepareMainPicture implements Callable<MainPicture>,
         OnTileImageInsertedToMainImageEvent, OnOriginalImageCopied, OnColorCalculatedEvent {
 
     private final MainPicture mainPicture;
-    private final int tileWidth;
-    private final int tileHeight;
+    private int tileWidth;
+    private int tileHeight;
     private final List<Consumer<TileImageInsertedToMainImageEventArgs>> tileImageInsertedToMainImageListeners = new ArrayList<>();
     private final List<Consumer<ColorCalculatedEventArgs>> onColorCalculatedListeners = new ArrayList<>();
     private final List<Consumer<OriginalImageCopiedEventArgs>> onOriginalImageCopiedListeners = new ArrayList<>();
 
-    public PrepareMainPicture(MainPicture mainPicture, int tileWidth, int tileHeight) {
+    public PrepareMainPicture(MainPicture mainPicture) {
         this.mainPicture = mainPicture;
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
     }
 
     @Override
     public MainPicture call() throws Exception {
         File originalMainPicture = new File(this.mainPicture.getPath());
-        String mainPicturePath = "/main/" + originalMainPicture.getName();
-        Files.copy(originalMainPicture.toPath(), new FileOutputStream(mainPicturePath));
-        File workImageFile = new File(mainPicturePath);
+        File parent = new File("/main/");
+        parent.mkdirs();
+        File workImageFile = new File(parent, originalMainPicture.getName());
+        Files.copy(originalMainPicture.toPath(), new FileOutputStream(workImageFile.getAbsoluteFile()));
+
         this.mainPicture.setWorkImageFile(originalMainPicture);
         BufferedImage image = ImageIO.read(workImageFile);
+        Double lenFactor = new Double(Register.getInstance().getProperty(SettingsConstants.IMAGE_FACTOR, "0.015"));
+        this.tileWidth = (int) (image.getWidth() * lenFactor);
+        this.tileHeight = (int) (image.getHeight() * lenFactor);
         int dtWidth = image.getWidth() / this.tileWidth;
         int dtHeight = image.getHeight() / this.tileHeight;
         this.setPointsInImage(dtWidth, dtHeight, image);
