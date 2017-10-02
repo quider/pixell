@@ -47,7 +47,7 @@ public class PrepareMainPicture implements Callable<MainPicture>,
         int dtWidth = image.getWidth() / this.tileWidth;
         int dtHeight = image.getHeight() / this.tileHeight;
         this.setPointsInImage(dtWidth, dtHeight, image);
-        return null;
+        return this.mainPicture;
     }
 
     private void setPointsInImage(int dtWidth, int dtHeight, BufferedImage image) {
