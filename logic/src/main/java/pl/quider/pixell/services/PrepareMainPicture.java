@@ -7,11 +7,15 @@ import pl.quider.pixell.events.OnColorCalculatedEvent;
 import pl.quider.pixell.events.OnOriginalImageCopied;
 import pl.quider.pixell.events.OnTileImageInsertedToMainImageEvent;
 import pl.quider.pixell.model.MainPicture;
+import pl.quider.pixell.model.Point;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -20,12 +24,16 @@ public class PrepareMainPicture implements Callable<MainPicture>,
         OnTileImageInsertedToMainImageEvent, OnOriginalImageCopied, OnColorCalculatedEvent {
 
     private final MainPicture mainPicture;
+    private final int tileWidth;
+    private final int tileHeight;
     private final List<Consumer<TileImageInsertedToMainImageEventArgs>> tileImageInsertedToMainImageListeners = new ArrayList<>();
     private final List<Consumer<ColorCalculatedEventArgs>> onColorCalculatedListeners = new ArrayList<>();
     private final List<Consumer<OriginalImageCopiedEventArgs>> onOriginalImageCopiedListeners = new ArrayList<>();
 
-    public PrepareMainPicture(MainPicture mainPicture) {
+    public PrepareMainPicture(MainPicture mainPicture, int tileWidth, int tileHeight) {
         this.mainPicture = mainPicture;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
     }
 
     @Override
@@ -35,7 +43,22 @@ public class PrepareMainPicture implements Callable<MainPicture>,
         Files.copy(originalMainPicture.toPath(), new FileOutputStream(mainPicturePath));
         File workImageFile = new File(mainPicturePath);
         this.mainPicture.setWorkImageFile(originalMainPicture);
+        BufferedImage image = ImageIO.read(workImageFile);
+        int dtWidth = image.getWidth() / this.tileWidth;
+        int dtHeight = image.getHeight() / this.tileHeight;
+        this.setPointsInImage(dtWidth, dtHeight);
         return null;
+    }
+
+    private void setPointsInImage(int dtWidth, int dtHeight) {
+        HashSet<Point> points = new HashSet<>();
+        for (int x = 0; x < dtWidth; x++) {
+            for (int y = 0; y < dtHeight; y++) {
+                Point point = new Point(x * this.tileWidth, y * this.tileHeight, this.tileWidth, tileHeight);
+                points.add(point);
+            }
+        }
+        this.mainPicture.setPoints(points);
     }
 
     @Override

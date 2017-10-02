@@ -48,7 +48,7 @@ public class ImageResizer implements Runnable, OnImageResizedEvent {
             }
             BufferedImage resizedImage = new BufferedImage(wMini, hMini, read.getType());
             Graphics2D g = resizedImage.createGraphics();
-            g.drawImage(read, 0, 0, wMini, hMini, null);
+            g.drawImage(read.getScaledInstance(wMini, hMini, Image.SCALE_SMOOTH), 0, 0, wMini, hMini, null);
             g.dispose();
             TilePicture tilePicture = null;
             File newDestinationFile = getNewDestinationFile(originalImageFile.getName());
