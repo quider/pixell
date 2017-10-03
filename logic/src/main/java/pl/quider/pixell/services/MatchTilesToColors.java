@@ -10,15 +10,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class MatchTilesToColors implements Callable<List<TilePicture>>, OnImageMatchToColorEvent {
 
     private Color color;
     private final List<TilePicture> listOfAllPictures;
     private List<Consumer<ImageMatchToColorEventArgs>> imageMatchToColorListeners = new ArrayList<>();
-    private int colorDelta = new Integer(Register.getInstance().getProperty(SettingsConstants.IMAGE_COLOR_DT, "3"));
 
     public MatchTilesToColors(Color color, List<TilePicture> listOfAllPictures) {
         this.color = color;
@@ -27,10 +28,26 @@ public class MatchTilesToColors implements Callable<List<TilePicture>>, OnImageM
 
     @Override
     public List<TilePicture> call() {
-        return listOfAllPictures.stream().filter(this::filterColors).collect(Collectors.toList());
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ArrayList<TilePicture> result = new ArrayList<>();
+        int colorDelta = new Integer(Register.getInstance().getProperty(SettingsConstants.IMAGE_COLOR_DT, "3"));
+        do {
+            for (TilePicture picture : listOfAllPictures) {
+                AverageColorCalculator calculator = new AverageColorCalculator(picture);
+                Future<Color> color = executorService.submit(calculator);
+                if (filterColors(picture, colorDelta)) {
+                    result.add(picture);
+                }
+            }
+            if (result.isEmpty()) {
+                colorDelta += new Integer(Register.getInstance().getProperty(SettingsConstants.IMAGE_COLOR_DT_STEP, "2"));
+            }
+        } while (result.isEmpty());
+
+        return result;
     }
 
-    private boolean filterColors(TilePicture picture) {
+    private boolean filterColors(TilePicture picture, int colorDelta) {
         Color c = picture.getColor();
         int blue = Math.abs(c.getBlue() - this.color.getBlue());
         int red = Math.abs(c.getRed() - this.color.getRed());

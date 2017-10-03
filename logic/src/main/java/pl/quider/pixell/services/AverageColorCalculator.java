@@ -23,14 +23,23 @@ public class AverageColorCalculator implements Callable<Color>, OnColorCalculate
     public Color call() throws Exception {
         if (this.picture == null) throw new NullPointerException("No picture");
         BufferedImage bi = picture.getBi();
-        int index = 0;
+        //todo: Add parameter here:
+        Color color = getColor(bi, bi.getMinX(), bi.getMinY(), bi.getWidth(), bi.getHeight());
+
+        for (Consumer<ColorCalculatedEventArgs> listener : this.colorCalculatedListener) {
+            listener.accept(new ColorCalculatedEventArgs(this, color, this.picture));
+        }
+        return color;
+    }
+
+    public Color getColor(BufferedImage bi, int minX, int minY, int minWidth, int minHeight) {
+        Color color = null;
         long redSum = 0;
         long greenSum = 0;
         long blueSum = 0;
-        //todo: Add parameter here:
-        Color color = null;
-        for (int x = bi.getMinX(); x < bi.getWidth(); x += 4) {
-            for (int y = bi.getMinY(); y < bi.getHeight(); y += 4) {
+        int index = 0;
+        for (int x = minX; x < minWidth; x += 4) {
+            for (int y = minY; y < minHeight; y += 4) {
                 int rgb = bi.getRGB(x, y);
                 Color c = new Color(rgb);
                 redSum += c.getRed();
@@ -40,10 +49,6 @@ public class AverageColorCalculator implements Callable<Color>, OnColorCalculate
             }
         }
         color = new Color(new Integer((int) (redSum / index)), (int) greenSum / index, (int) blueSum / index);
-
-        for (Consumer<ColorCalculatedEventArgs> listener : this.colorCalculatedListener) {
-            listener.accept(new ColorCalculatedEventArgs(this, color, this.picture));
-        }
         return color;
     }
 
