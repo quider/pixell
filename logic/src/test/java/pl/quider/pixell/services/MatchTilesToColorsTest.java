@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import pl.quider.pixell.eventArgs.ImageResizedEventArgs;
 import pl.quider.pixell.model.MainPicture;
 import pl.quider.pixell.model.Point;
 import pl.quider.pixell.model.TilePicture;
@@ -28,8 +27,8 @@ public class MatchTilesToColorsTest {
     public void setUp() throws Exception {
         CatalogSniffer catalogSniffer = new CatalogSniffer(new File("C:\\Users\\adria\\Pictures\\Camera Roll"));
         call = catalogSniffer.call();
-        final ExecutorService executorService = Executors.newFixedThreadPool(11);
         call.stream().parallel().forEach(this::foreachElement);
+        final ExecutorService executorService = Executors.newFixedThreadPool(11);
         mainPicture = new PrepareMainPicture(new MainPicture("C:/Users/adria/Pictures/Camera Roll/20170708_163020.jpg")).call();
     }
 
@@ -53,11 +52,10 @@ public class MatchTilesToColorsTest {
 
     private void foreachElement(File file) {
         ImageResizer imageResizer = new ImageResizer(file, new File("tiles/"));
-        imageResizer.addOnImageResizedListener(this::eventConsumer);
-    }
-
-    private void eventConsumer(ImageResizedEventArgs imageResizedEventArgs) {
-        tiles.add(imageResizedEventArgs.getCreatedTile());
+        imageResizer.addOnImageResizedListener(imageResizedEventArgs -> {
+            tiles.add(imageResizedEventArgs.getCreatedTile());
+        });
+        imageResizer.run();
     }
 
 }
