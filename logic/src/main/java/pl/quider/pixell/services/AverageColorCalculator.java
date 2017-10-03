@@ -38,8 +38,8 @@ public class AverageColorCalculator implements Callable<Color>, OnColorCalculate
         long greenSum = 0;
         long blueSum = 0;
         int index = 0;
-        for (int x = minX; x < minWidth; x += 4) {
-            for (int y = minY; y < minHeight; y += 4) {
+        for (int x = minX; x < minWidth + minX; x += 4) {
+            for (int y = minY; y < minHeight + minY; y += 4) {
                 int rgb = bi.getRGB(x, y);
                 Color c = new Color(rgb);
                 redSum += c.getRed();
