@@ -58,8 +58,6 @@ public class MainPicture extends Picture {
 
     public void setPoints(Set<Point> points) {
         this.points = points;
-        this.colorMap = new HashMap<>();
-        this.pictureMap = new HashMap<>();
         this.pointSetsListnersList.forEach(this::pointsSet);
     }
 
@@ -70,5 +68,9 @@ public class MainPicture extends Picture {
 
     private void addedColorToMap(Consumer<ColorAddedToMapEventArgs> colorAddedToMapEventArgsConsumer) {
 
+    }
+
+    public Map<Point, Color> getColorMap() {
+        return colorMap;
     }
 }

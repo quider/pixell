@@ -22,6 +22,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
+/**
+ * Class prepares mainpicture passed as parameter with original source.
+ * Image is copied to new location and this copied file becomes work file.
+ * Then image is divided on mosaic tiles and average color of those is calculated.
+ */
 public class PrepareMainPicture implements Callable<MainPicture>,
         OnTileImageInsertedToMainImageEvent, OnOriginalImageCopied, OnColorCalculatedEvent {
 
@@ -55,6 +60,11 @@ public class PrepareMainPicture implements Callable<MainPicture>,
         return this.mainPicture;
     }
 
+    /**
+     * @param dtWidth
+     * @param dtHeight
+     * @param image
+     */
     private void setPointsInImage(int dtWidth, int dtHeight, BufferedImage image) {
         HashSet<Point> points = new HashSet<>();
         for (int x = 0; x < dtWidth; x++) {
