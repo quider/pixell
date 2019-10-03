@@ -1,4 +1,4 @@
-package pl.quider.standalone.pixell.ui;
+package pl.quider.standalone;
 
 import pl.quider.pixell.Register;
 import pl.quider.pixell.events.ImagePaintedListener;
