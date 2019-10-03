@@ -1,7 +1,12 @@
 package pl.quider.pixell.issues;
 
-import java.awt.BorderLayout;
-import java.awt.Desktop;
+import pl.quider.pixell.github.Issue;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -10,20 +15,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingWorker;
-import javax.swing.border.EmptyBorder;
-
-import pl.quider.pixell.github.Issue;
 
 public class IssueWindow extends JFrame {
 

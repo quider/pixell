@@ -7,8 +7,8 @@ import pl.quider.pixell.eventArgs.TileAddedToMapEventArgs;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class MainPicture extends Picture {

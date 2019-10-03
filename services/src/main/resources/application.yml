@@ -1,0 +1,18 @@
+catalog:
+  sniffer:
+    extensions: ".jpg,.jpeg,.png"
+tile:
+  image:
+    bigger:
+      side: 20
+    square: false
+imagefactor:
+image:
+  color:
+    dt:
+      step: 3
+defaultdirectory:
+autoupdateenabled:
+updatestart:
+updateend:
+version: 0.1

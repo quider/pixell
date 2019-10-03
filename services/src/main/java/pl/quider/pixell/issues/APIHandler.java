@@ -1,19 +1,13 @@
 package pl.quider.pixell.issues;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
-
+import com.google.gson.Gson;
 import pl.quider.pixell.github.Issue;
 import pl.quider.pixell.github.Label;
 
-import com.google.gson.Gson;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class APIHandler {
 
