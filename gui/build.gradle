@@ -42,4 +42,7 @@ dependencies {
     implementation 'org.springframework:spring-context:5.1.5.RELEASE'
     implementation 'org.projectlombok:lombok:1.18.2'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
+    // https://mvnrepository.com/artifact/javax.annotation/jsr250-api
+    compile group: 'javax.annotation', name: 'jsr250-api', version: '1.0'
+
 }
