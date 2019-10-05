@@ -25,7 +25,12 @@ jar {
 group 'pl.factorymethod.standalone'
 version '0.0.1-SNAPSHOT'
 
+configurations {
+    javafxCompile
+}
+
 sourceCompatibility = 12
+mainClassName = "pl.quider.standalone.Pixell"
 
 repositories {
     mavenCentral()
@@ -35,4 +40,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation project(':services')
     implementation 'org.springframework:spring-context:5.1.5.RELEASE'
+    implementation 'org.projectlombok:lombok:1.18.2'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
 }
