@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import pl.quider.pixell.model.Picture;
+import pl.quider.pixell.services.AverageColorCalculator;
 
 import java.io.File;
 import java.net.URL;
@@ -46,7 +48,7 @@ public class MainWindowController implements Initializable {
         final ExecutorService executorService = Executors.newCachedThreadPool();
         if (file != null && file.isDirectory()) {
             for (File listFile : file.listFiles(f -> true)) {
-//                executorService.submit();
+                executorService.submit(new AverageColorCalculator(new Picture(listFile.getPath())));
             }
         } else {
             new Alert(Alert.AlertType.WARNING, "Nie został wybrany żaden katalog!", ButtonType.OK);

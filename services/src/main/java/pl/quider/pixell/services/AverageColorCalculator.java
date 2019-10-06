@@ -1,5 +1,7 @@
 package pl.quider.pixell.services;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import pl.quider.pixell.eventArgs.ColorCalculatedEventArgs;
 import pl.quider.pixell.events.OnColorCalculatedEvent;
 import pl.quider.pixell.model.Picture;
@@ -11,6 +13,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
+@Service
+@Scope("prototype")
 public class AverageColorCalculator implements Callable<Color>, OnColorCalculatedEvent {
     private Picture picture;
     private List<Consumer<ColorCalculatedEventArgs>> colorCalculatedListener = new ArrayList<>();

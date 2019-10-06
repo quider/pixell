@@ -20,7 +20,7 @@ public class Picture implements  Serializable {
 	 * @param picturePath 
 	 * @throws IOException
 	 */
-	public Picture(String picturePath) throws IOException {
+	public Picture(String picturePath) {
 		this.path = picturePath;
 	}
 	
