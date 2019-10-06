@@ -50,7 +50,7 @@
                                                    prefHeight="27.0" prefWidth="192.0" AnchorPane.leftAnchor="2.0"
                                                    AnchorPane.rightAnchor="79.0" AnchorPane.topAnchor="2.0"/>
                                         <Button fx:id="btOpen" layoutX="203.0" layoutY="22.0" mnemonicParsing="false"
-                                                prefHeight="27.0" prefWidth="69.0" text="Otwórz"
+                                                onAction="#onOpenClick" prefHeight="27.0" prefWidth="69.0" text="Otwórz"
                                                 AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0"/>
                                     </children>
                                 </AnchorPane>
